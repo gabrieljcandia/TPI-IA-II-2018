@@ -235,35 +235,35 @@ class Controladora:
         return retorno
 
 
-def generarPuntosAleatorios3D(self, cant, Xmin, Xmax, Ymin, Ymax, Zmin, Zmax):
-    clusters = []
-    for i in range(cant):
-        miCluster = Cluster(random.uniform(Xmin, Xmax), random.uniform(Ymin, Ymax), random.uniform(Zmin, Zmax))
-        clusters.append(miCluster)
-    print(clusters)
+    def generarPuntosAleatorios3D(self, cant, Xmin, Xmax, Ymin, Ymax, Zmin, Zmax):
+        clusters = []
+        for i in range(cant):
+            miCluster = Cluster(random.uniform(Xmin, Xmax), random.uniform(Ymin, Ymax), random.uniform(Zmin, Zmax))
+            clusters.append(miCluster)
+        print(clusters)
 
-    return clusters
-
-
-def getClusters(self):
-    return self.clusters
+        return clusters
 
 
-def distanciaClusters(self, c1, c2):
-    min = 1000000  # el valor que representa a la mínima distancia entre los clusters
+    def getClusters(self):
+        return self.clusters
 
-    if c1.hasClusters:
-        dist = self.distanciaClusters(c1.getClusters, c2)
-    else:
-        if c2.hasClusters:
-            dist = self.distanciaClusters(c1, c2.getClusters)
+
+    #Retorna la distancia de 2 clústers, sean superiores o inferiores. NECESARIO ARREGLAR PARA QUE TRABAJEN USANDO LOS IDS DE LOS CLÚSTERS
+    def distanciaClusters(self, c1, c2):
+        min = 1000000  # el valor que representa a la mínima distancia entre los clusters
+
+        if c1.hasClusters():
+            dist = self.distanciaClusters(c1.getClusters(), c2)
         else:
-            dist = self.distanciaClusters(c1, c2)
-    if dist < min:
-        min = dist
-        dist = 1000000
+            if c2.hasClusters():
+                dist = self.distanciaClusters(c1, c2.getClusters())
+            else:
+                dist = c1.distanciaEuclidea(c2.getX(), c2.getY())
+        if dist < min:
+            min = dist
+            dist = 1000000
 
-    dist = c1.distanciaEuclidea(c2.getX(), c2.getY())
 
 # miControladora = Controladora()
 # miControladora.Visual.iniciarVentana()

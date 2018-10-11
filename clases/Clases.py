@@ -120,15 +120,6 @@ class Cluster:
     def setClusters(self, c):
         self.clusters = c
 
-    def agregarCluster(self, c):
-        #clusterAgregar = self.getClusters() + [c]
-        #self.setClusters(clusterAgregar)
-        if self.clusters is not None:
-            self.clusters.append(c)
-        else:
-            self.clusters = []
-            self.clusters.append(c)
-
     def hasClusters(self): #devuelve True si el cluster agrupa a otros
         if self.clusters is not None:
             retornar = True
