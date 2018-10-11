@@ -8,6 +8,7 @@ from tkinter import Tk
 
 from clases.Clases import Cluster
 from visual.Figura import Figura
+from visual.IGU_Graficos import IGU_Graficos
 
 qtCreatorFile = "visual/IGU_Principal.ui" #Nombre del archivo .ui
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
@@ -167,31 +168,10 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
                                                                      self.spinZmin.value(),
                                                                      self.spinZmax.value())'''
 
-        self.frame = QtWidgets.QFrame()
-        self.ui = Ui_Frame()
-        self.ui.setupUi(self.frame)
-        self.frame.show()
+        self.miIguGraficos = IGU_Graficos(self)
+        #self.abrirVentanaGraficos()
 
-        self.ui.spinCantClusters.valueChanged.connect(self.editCantClusters)
 
-        #prueba
-        Cluster.idProximo = 1
-        cluster = self.miControladora.pruebaClustersStaticos(self.miControladora) #para probar el dendograma
-
-        graficoSL = Figura(self.ui, self.ui.VLgraficoSL)
-        graficoSL.graficar(cluster)
-
-        self.dendograma = Figura(self.ui, self.ui.VLgraficoDendograma)
-        self.dendograma.graficarDendograma(cluster, self.spinCantClusters.value()) #se pasa el cluster de mayor jerarquia
-        #figura2 = Figura(self.ui, self.ui.VLgraficoCL)
-        #figura2.graficar(clusters)
-        #figura3 = Figura(self.ui, self.ui.VLgraficoAL)
-        #figura3.graficar(clusters)
-
-    def editCantClusters(self):
-        Cluster.idProximo = 1
-        cluster = self.miControladora.pruebaClustersStaticos(self.miControladora) #para probar el dendograma
-        self.dendograma.graficarDendograma(cluster, self.ui.spinCantClusters.value())
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
