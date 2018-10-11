@@ -9,8 +9,9 @@ class Controladora:
     def __init__(self):
         self.a = "3"  # borrar esta liena
 
-    def pruebaClustersStaticos(self): #crea una jerarquia de clusters, como si fuera el resultado de uno de los metodos
-        #creacion clusters puntos
+    def pruebaClustersStaticos(
+            self):  # crea una jerarquia de clusters, como si fuera el resultado de uno de los metodos
+        # creacion clusters puntos
         cl1 = Cluster(1, 4, 0)
         cl2 = Cluster(2, 5, 0)
         cl3 = Cluster(2, 4, 0)
@@ -24,7 +25,7 @@ class Controladora:
         cl9 = Cluster(5, 2, 0)
         cl10 = Cluster(6, 2, 0)
 
-        #creacion clusters agrupadores
+        # creacion clusters agrupadores
         cl11 = Cluster()
         cl12 = Cluster()
         cl13 = Cluster()
@@ -35,7 +36,7 @@ class Controladora:
         cl18 = Cluster()
         cl19 = Cluster()
 
-        #agrupamiento clusters
+        # agrupamiento clusters
         cl11.addCluster(cl5)
         cl11.addCluster(cl6)
 
@@ -150,21 +151,20 @@ class Controladora:
         nuevoCluster2.addCluster(nuevoCluster3)
         nuevoCluster3.addCluster(nuevoCluster4)
         clusters[1].addCluster(nuevoCluster1)
-	
-	return clusters
+
+        return clusters
 
     def setClusters(self, clustersAgregar):
         self.clusters = clustersAgregar
 
-    #Agrega el nuevo clúster a la lista de clústers del dominio
+    # Agrega el nuevo clúster a la lista de clústers del dominio
     def agregarClusterSuperior(self, nc):
         self.setClusters(self.clusters + nc)
 
-
     def simple(self):
         min = 1000000000000000000000000
-        clustersUnirse = [] #va a tener los ids de los clusters a fusionarse
-        nuevoCluster = Cluster(0, 0, 0) #es el nuevo cluster superior que se creará con el algoritmo
+        clustersUnirse = []  # va a tener los ids de los clusters a fusionarse
+        nuevoCluster = Cluster(0, 0, 0)  # es el nuevo cluster superior que se creará con el algoritmo
         cn1 = None
         cn2 = None
         dist = 0
@@ -172,13 +172,14 @@ class Controladora:
         j = 1
         while i < len(self.getClusters()):
             while j < len(self.getClusters()):
-                #Verificación de que los clusters evaluados no pertenecen al mismo cluster superior
+                # Verificación de que los clusters evaluados no pertenecen al mismo cluster superior
                 if (not self.perteneceAlMismoCluster(self.getClusters()[i], self.getClusters()[j])):
-                    #dist = self.getClusters()[i].distanciaEuclidea(self.getClusters()[j].getX(), self.getClusters()[j].getY())
+                    # dist = self.getClusters()[i].distanciaEuclidea(self.getClusters()[j].getX(), self.getClusters()[j].getY())
                     dist = self.distanciaClusters(self.getClusters()[i], self.getClusters()[j])
                     if (dist < min):
-                        print ("Nueva distancia mínima: ", dist)
-                        print ("Entre los clústers: ", self.getClusters()[i].getCoordenadasR2(),", y " ,self.getClusters()[j].getCoordenadasR2())
+                        print("Nueva distancia mínima: ", dist)
+                        print("Entre los clústers: ", self.getClusters()[i].getCoordenadasR2(), ", y ",
+                              self.getClusters()[j].getCoordenadasR2())
                         min = dist
                         cn1 = self.getClusters()[i]
                         cn2 = self.getClusters()[j]
@@ -190,10 +191,10 @@ class Controladora:
             print("El valor del cluster a unir, en la posición 1 es: ", cn2.getCoordenadasR2())
             cs1 = self.devolverSuperior(cn1)
             print("El valor de cs1, 1, es: ", cs1)
-            #nuevoCluster.agregarCluster(cs)
-            #nuevoCluster.setClusters(cs1)
+            # nuevoCluster.agregarCluster(cs)
+            # nuevoCluster.setClusters(cs1)
             cs2 = self.devolverSuperior(cn2)
-            #nuevoCluster.agregarCluster(cs1)
+            # nuevoCluster.agregarCluster(cs1)
             nuevoCluster.setClusters([cs1, cs2])
 
             self.agregarClusterSuperior(nuevoCluster)
@@ -210,17 +211,17 @@ class Controladora:
 
     def perteneceAlMismoCluster(self, c1, c2):
         retorno = False
-        for x in self.getClusters(): #Recorro los clusters que contiene el dominio
+        for x in self.getClusters():  # Recorro los clusters que contiene el dominio
             if x.hasClusters():
-                cAux = x.getClustersContenidos() #Traigo todos los elementos que posee x
+                cAux = x.getClustersContenidos()  # Traigo todos los elementos que posee x
 
                 if ((c1 in cAux) & (c2 in cAux)):
                     return True
-        #end for
+        # end for
         return retorno
 
     def distanciaClusters(self, cluster1, cluster2):
-        #dist = cluster1.distanciaEuclidea(cluster2.getX(), cluster2.getY())
+        # dist = cluster1.distanciaEuclidea(cluster2.getX(), cluster2.getY())
         retorno = 10000000
         c1 = cluster1.getClustersContenidos()
         c2 = cluster2.getClustersContenidos()

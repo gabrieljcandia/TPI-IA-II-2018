@@ -165,8 +165,8 @@ class Cluster:
         return ptoDistante
 
     def distanciaEuclidea(self, x, y): #distancia entre 2 puntos
-        #dist = math.sqrt((x[0]-x[1])**2 + (y[0]-y[1])**2)
-        dist = ((self.getX() - x)**2 + (self.getY() - y)**2)
+        dist = math.sqrt((x[0]-x[1])**2 + (y[0]-y[1])**2)
+        #dist = ((self.getX() - x)**2 + (self.getY() - y)**2)
         return dist
 
     ########### metodos graficar dendograma #####################
