@@ -7,7 +7,6 @@ class Cluster:
     R = []
     G = []
     B = []
-    clusters = []
 
     def __init__(self, x=None, y=None, z=None): #si "x", "y" o "z" es vacio, les asigna "None"
         self.id = self.obtenerNuevaId()
@@ -124,7 +123,11 @@ class Cluster:
     def agregarCluster(self, c):
         #clusterAgregar = self.getClusters() + [c]
         #self.setClusters(clusterAgregar)
-        self.clusters.append(c)
+        if self.clusters is not None:
+            self.clusters.append(c)
+        else:
+            self.clusters = []
+            self.clusters.append(c)
 
     def hasClusters(self): #devuelve True si el cluster agrupa a otros
         if self.clusters is not None:
@@ -133,12 +136,17 @@ class Cluster:
             retornar = False
         return retornar
 
-    #Método que devuelve los clústers contenidos en los clústers superiores
+    # Método que devuelve los clústers contenidos en los clústers superiores
     def getClustersContenidos(self):
         retorno = []
-        if self.hasClusters():
-            for x in self.getClusters():
-                retorno = retorno + [x.getClustersContenidos()]
+        if self.clusters is not None:
+            for x in self.clusters:
+                result = x.getClustersContenidos()
+                if type(result) is list:
+                    for i in result:
+                        retorno.append(i)
+                else:
+                    retorno.append(result)
         else:
             retorno = self
         return retorno
