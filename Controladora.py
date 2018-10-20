@@ -104,7 +104,7 @@ class Controladora:
                 clusters.append(miCluster)
             print(clusters)
 
-            # prueba relacionar clusters
+            '''# prueba relacionar clusters
             nuevoCluster1 = Cluster(1, 2, 0)
             nuevoCluster2 = Cluster(1, 3, 0)
             nuevoCluster3 = Cluster(1, 4, 0)
@@ -122,7 +122,7 @@ class Controladora:
             nuevoCluster1.addCluster(nuevoCluster2)
             nuevoCluster2.addCluster(nuevoCluster3)
             nuevoCluster3.addCluster(nuevoCluster4)
-            clusters[1].addCluster(nuevoCluster1)
+            clusters[1].addCluster(nuevoCluster1)'''
         return clusters
 
     def generarPuntosAleatorios2D(self, cant, Xmin, Xmax, Ymin, Ymax):
@@ -132,7 +132,7 @@ class Controladora:
             clusters.append(miCluster)
         print(clusters)
 
-        # prueba relacionar clusters
+        ''''# prueba relacionar clusters
         nuevoCluster1 = Cluster(1, 2, 0)
         nuevoCluster2 = Cluster(1, 3, 0)
         nuevoCluster3 = Cluster(1, 4, 0)
@@ -150,7 +150,7 @@ class Controladora:
         nuevoCluster1.addCluster(nuevoCluster2)
         nuevoCluster2.addCluster(nuevoCluster3)
         nuevoCluster3.addCluster(nuevoCluster4)
-        clusters[1].addCluster(nuevoCluster1)
+        clusters[1].addCluster(nuevoCluster1)'''
 
         return clusters
 

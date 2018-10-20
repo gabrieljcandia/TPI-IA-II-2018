@@ -47,7 +47,7 @@ class Figura(QDialog):
         self.ax = self.figure.add_subplot(111)
 
         cantPuntos = cluster.cantPuntos() #devuelve cantidad de puntos original
-        cantClusters = cluster.getId() #devuelve cantidad de clusters total
+        cantClusters = cluster.getId() #devuelve ID del cluster de mayor jerarquia, que se corresponde a la cantidad total de clusters
         if cantPuntos < cluster.getId() and cantPuntos >= 2: #control de errores
             self.graficarDendogramaCluster(cluster, cantPuntos, cantClusters, maxClusters, maxElemPorCluster)
 
@@ -56,7 +56,14 @@ class Figura(QDialog):
 
     def graficarDendogramaCluster(self, cluster, cantPuntos, cantClusters, maxClusters=None, maxElemPorCluster=None):
         if cluster.clusters is not None:
-            if (maxClusters is None) or (cluster.getId() <= cantClusters - (cantClusters - maxClusters)):
+            #if (maxClusters is None) or (cluster.getId() <= cantClusters - (cantClusters - maxClusters)):
+
+            # if cluster.getId() < cantPuntos
+            # if nivel^-1 <= cantClusters
+            # id >= idTotal - cantClusters
+            # if cluster.getId() >= cantClusters - maxClusters
+            #if cluster.getId() <= cantClusters - (cantClusters - maxClusters):
+            if cluster.getId() <= cantClusters - maxClusters + 1:
                 nivel = cluster.getNivel(cantPuntos)
                 clIzq = cluster.getClusterIzq()
                 clDer = cluster.getClusterDer()
@@ -69,6 +76,10 @@ class Figura(QDialog):
 
             for cl in cluster.clusters:
                 self.graficarDendogramaCluster(cl, cantPuntos, cantClusters, maxClusters, maxElemPorCluster)
+
+        if cluster.getId() <= cantPuntos:
+                x = cluster.getId()
+                self.ax.scatter(x, 0, s=None, color=[cluster.getRGB()])
 
     def graficarCirculo(self, cluster):
         centroide = cluster.obtenerCentroide()
