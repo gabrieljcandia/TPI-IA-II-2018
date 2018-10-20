@@ -24,13 +24,17 @@ class IGU_Graficos():
         self.ui.spinCantClusters.valueChanged.connect(self.controlSpinCantClusters)
         self.ui.spinCantElemPorCluster.valueChanged.connect(self.controlSpinCantElemPorCluster)
 
-        #prueba
+        #prueba de obtencion de clusters
         Cluster.idProximo = 1
         cluster = self.iguPrinc.miControladora.pruebaClustersStaticos(self.iguPrinc.miControladora) #para probar el dendograma
 
         #graficos
         graficoSL = Figura(self.ui, self.ui.VLgraficoSL)
         graficoSL.graficar(cluster)
+        graficoCL = Figura(self.ui, self.ui.VLgraficoCL)
+        graficoCL.graficar(cluster)
+        graficoAL = Figura(self.ui, self.ui.VLgraficoAL)
+        graficoAL.graficar(cluster)
         self.graficarDendograma(cluster)
         #figura2 = Figura(self.ui, self.ui.VLgraficoCL)
         #figura2.graficar(clusters)
@@ -53,10 +57,16 @@ class IGU_Graficos():
 
     #funciones graficos
     def graficarDendograma(self, cluster):
-        self.dendograma = Figura(self.ui, self.ui.VLgraficoDendograma)
-        self.dendograma.graficarDendograma(cluster, self.iguPrinc.spinCantClusters.value()) #se pasa el cluster de mayor jerarquia
+        self.dendogramaSL = Figura(self.ui, self.ui.VLgraficoDendogramaSL)
+        self.dendogramaSL.graficarDendograma(cluster, self.iguPrinc.spinCantClusters.value()) #se pasa el cluster de mayor jerarquia
+        self.dendogramaCL = Figura(self.ui, self.ui.VLgraficoDendogramaCL)
+        self.dendogramaCL.graficarDendograma(cluster, self.iguPrinc.spinCantClusters.value()) #se pasa el cluster de mayor jerarquia
+        self.dendogramaAL = Figura(self.ui, self.ui.VLgraficoDendogramaAL)
+        self.dendogramaAL.graficarDendograma(cluster, self.iguPrinc.spinCantClusters.value()) #se pasa el cluster de mayor jerarquia
 
     def editCantClusters(self):
         Cluster.idProximo = 1
         cluster = self.iguPrinc.miControladora.pruebaClustersStaticos(self.iguPrinc.miControladora) #para probar el dendograma
-        self.dendograma.graficarDendograma(cluster, self.ui.spinCantClusters.value())
+        self.dendogramaSL.graficarDendograma(cluster, self.ui.spinCantClusters.value())
+        self.dendogramaCL.graficarDendograma(cluster, self.ui.spinCantClusters.value())
+        self.dendogramaAL.graficarDendograma(cluster, self.ui.spinCantClusters.value())

@@ -147,6 +147,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         clusters = self.miControladora.leerDatosArch(self.miControladora, ubicacionArch)
         return clusters
 
+    #se llama cuando usuario presiona boton "Generar"
     def generarGraficos(self):
         '''if self.rbDesdeArch.isChecked():
             clusters = self.extraerDatosArch()
