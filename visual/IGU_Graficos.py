@@ -78,6 +78,7 @@ class IGU_Graficos():
     def controlSpinCantElemPorCluster(self, val):
         if val > self.iguPrinc.spinCantPuntos.value():
             self.ui.spinCantElemPorCluster.setValue(self.iguPrinc.spinCantPuntos.value())
+        self.editCantClusters()
 
     #funciones radio buttons
     def agruparRbPersonalizarVista(self):
@@ -101,20 +102,37 @@ class IGU_Graficos():
         if self.ui.rbElemPorCluster.isChecked():
             self.ui.spinCantClusters.setEnabled(False)
             self.ui.spinCantElemPorCluster.setEnabled(True)
+        self.editCantClusters()
 
 
     #funciones graficos
     def graficarDendograma(self, cluster):
+        if self.ui.rbCantClusters.isChecked():
+            cantClusters = self.iguPrinc.spinCantClusters.value()
+            cantElemPorCluster = None
+        elif self.ui.rbElemPorCluster.isChecked():
+            cantElemPorCluster = self.iguPrinc.spinCantElemPorCluster.value()
+            cantClusters = None
+
         self.dendogramaSL = Figura(self.ui, self.ui.VLgraficoDendogramaSL)
-        self.dendogramaSL.graficarDendograma(cluster, self.iguPrinc.spinCantClusters.value()) #se pasa el cluster de mayor jerarquia
+        self.dendogramaSL.graficarDendograma(cluster, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
         self.dendogramaCL = Figura(self.ui, self.ui.VLgraficoDendogramaCL)
-        self.dendogramaCL.graficarDendograma(cluster, self.iguPrinc.spinCantClusters.value()) #se pasa el cluster de mayor jerarquia
+        self.dendogramaCL.graficarDendograma(cluster, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
         self.dendogramaAL = Figura(self.ui, self.ui.VLgraficoDendogramaAL)
-        self.dendogramaAL.graficarDendograma(cluster, self.iguPrinc.spinCantClusters.value()) #se pasa el cluster de mayor jerarquia
+        self.dendogramaAL.graficarDendograma(cluster, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
+
 
     def editCantClusters(self):
         Cluster.idProximo = 1
         cluster = self.iguPrinc.miControladora.pruebaClustersStaticos(self.iguPrinc.miControladora) #para probar el dendograma
-        self.dendogramaSL.graficarDendograma(cluster, self.ui.spinCantClusters.value())
-        self.dendogramaCL.graficarDendograma(cluster, self.ui.spinCantClusters.value())
-        self.dendogramaAL.graficarDendograma(cluster, self.ui.spinCantClusters.value())
+
+        if self.ui.rbCantClusters.isChecked():
+            cantClusters = self.ui.spinCantClusters.value()
+            cantElemPorCluster = None
+        elif self.ui.rbElemPorCluster.isChecked():
+            cantElemPorCluster = self.ui.spinCantElemPorCluster.value()
+            cantClusters = None
+
+        self.dendogramaSL.graficarDendograma(cluster, cantClusters, cantElemPorCluster)
+        self.dendogramaCL.graficarDendograma(cluster, cantClusters, cantElemPorCluster)
+        self.dendogramaAL.graficarDendograma(cluster, cantClusters, cantElemPorCluster)

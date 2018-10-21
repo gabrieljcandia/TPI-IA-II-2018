@@ -48,38 +48,42 @@ class Figura(QDialog):
 
         cantPuntos = cluster.cantPuntos() #devuelve cantidad de puntos original
         cantClusters = cluster.getId() #devuelve ID del cluster de mayor jerarquia, que se corresponde a la cantidad total de clusters
-        if cantPuntos < cluster.getId() and cantPuntos >= 2: #control de errores
-            self.graficarDendogramaCluster(cluster, cantPuntos, cantClusters, maxClusters, maxElemPorCluster)
+
+        if maxElemPorCluster is not None:
+            nvl = cluster.obtenerNivelDeXelementos(maxElemPorCluster, cantPuntos)
+        else:
+            nvl = None
+
+        if cantPuntos < cluster.getId() and cantPuntos >= 2: #control de entrada
+            self.graficarDendogramaCluster(cluster, cantPuntos, cantClusters, maxClusters, maxElemPorCluster, nvl)
 
         plt.autoscale(enable=True, axis='both', tight=None) #habilita autoscale
         self.canvas.draw()
 
-    def graficarDendogramaCluster(self, cluster, cantPuntos, cantClusters, maxClusters=None, maxElemPorCluster=None):
+    def graficarDendogramaCluster(self, cluster, cantPuntos, cantClusters, maxClusters=None, maxElemPorCluster=None, nvl=None):
         if cluster.clusters is not None:
-            #if (maxClusters is None) or (cluster.getId() <= cantClusters - (cantClusters - maxClusters)):
+            if (maxClusters is not None) and (cluster.getId() <= cantClusters - maxClusters + 1): #control limite cantidad clusters
+                self.graficarDendogramaClusterLineas(cluster, cantPuntos)
 
-            # if cluster.getId() < cantPuntos
-            # if nivel^-1 <= cantClusters
-            # id >= idTotal - cantClusters
-            # if cluster.getId() >= cantClusters - maxClusters
-            #if cluster.getId() <= cantClusters - (cantClusters - maxClusters):
-            if cluster.getId() <= cantClusters - maxClusters + 1:
-                nivel = cluster.getNivel(cantPuntos)
-                clIzq = cluster.getClusterIzq()
-                clDer = cluster.getClusterDer()
-                hIzq = clIzq.getNivel(cantPuntos)
-                hDer = clDer.getNivel(cantPuntos)
-                xIzq = clIzq.getLink()
-                xDer = clDer.getLink()
+            if (maxElemPorCluster is not None) and (cluster.getNivel(cantPuntos) <= nvl):
+                self.graficarDendogramaClusterLineas(cluster, cantPuntos)
 
-                self.ax.plot([xIzq, xIzq, xDer, xDer],[hIzq, nivel, nivel, hDer], color=cluster.getRGB())
+            for cl in cluster.clusters: #recursividad
+                    self.graficarDendogramaCluster(cl, cantPuntos, cantClusters, maxClusters, maxElemPorCluster, nvl)
 
-            for cl in cluster.clusters:
-                self.graficarDendogramaCluster(cl, cantPuntos, cantClusters, maxClusters, maxElemPorCluster)
-
-        if cluster.getId() <= cantPuntos:
+        if cluster.getId() <= cantPuntos: #grafica puntos, correspondientes a los puntos originales (de nivel 0 en la jerarquia)
                 x = cluster.getId()
                 self.ax.scatter(x, 0, s=None, color=[cluster.getRGB()])
+
+    def graficarDendogramaClusterLineas(self, cluster, cantPuntos):
+        nivel = cluster.getNivel(cantPuntos)
+        clIzq = cluster.getClusterIzq()
+        clDer = cluster.getClusterDer()
+        hIzq = clIzq.getNivel(cantPuntos)
+        hDer = clDer.getNivel(cantPuntos)
+        xIzq = clIzq.getLink()
+        xDer = clDer.getLink()
+        self.ax.plot([xIzq, xIzq, xDer, xDer],[hIzq, nivel, nivel, hDer], color=cluster.getRGB())
 
     def graficarCirculo(self, cluster):
         centroide = cluster.obtenerCentroide()
