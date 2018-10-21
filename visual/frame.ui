@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>858</width>
-    <height>498</height>
+    <width>786</width>
+    <height>476</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,27 +21,7 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <layout class="QHBoxLayout" name="HLresultados" stretch="1,0,1">
-     <item>
-      <layout class="QVBoxLayout" name="VLayoutArbol" stretch="0,1">
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Árbol Jerárquico</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="VLgraficoDendograma"/>
-       </item>
-      </layout>
-     </item>
+    <layout class="QHBoxLayout" name="HLresultados" stretch="0,1">
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_11">
        <item>
@@ -58,6 +38,12 @@
             <size>
              <width>278</width>
              <height>84</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>83</height>
             </size>
            </property>
            <property name="title">
@@ -115,7 +101,7 @@
              <rect>
               <x>10</x>
               <y>50</y>
-              <width>261</width>
+              <width>266</width>
               <height>24</height>
              </rect>
             </property>
@@ -270,59 +256,101 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_12" stretch="0,1,0,1,0,1">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetDefaultConstraint</enum>
-       </property>
+      <layout class="QVBoxLayout" name="VLayoutArbol" stretch="0">
        <item>
-        <widget class="QLabel" name="label_16">
-         <property name="text">
-          <string>Single-Link</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="VLgraficoSL">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMaximumSize</enum>
-         </property>
-        </layout>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_17">
-         <property name="text">
-          <string>Complete-Link</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="VLgraficoCL">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMaximumSize</enum>
-         </property>
-        </layout>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_18">
-         <property name="text">
-          <string>Average-Link</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="VLgraficoAL">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMaximumSize</enum>
-         </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <layout class="QVBoxLayout" name="SL">
+           <item>
+            <widget class="QLabel" name="txtSL">
+             <property name="text">
+              <string>Single-Link</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="SL2">
+             <item>
+              <layout class="QVBoxLayout" name="VLgraficoDendogramaSL">
+               <property name="sizeConstraint">
+                <enum>QLayout::SetMaximumSize</enum>
+               </property>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="VLgraficoSL"/>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="CL">
+           <item>
+            <widget class="QLabel" name="txtCL">
+             <property name="text">
+              <string>Complete-Link</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="CL2">
+             <item>
+              <layout class="QVBoxLayout" name="VLgraficoDendogramaCL">
+               <property name="sizeConstraint">
+                <enum>QLayout::SetMaximumSize</enum>
+               </property>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="VLgraficoCL">
+               <property name="sizeConstraint">
+                <enum>QLayout::SetMaximumSize</enum>
+               </property>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="AL">
+           <item>
+            <widget class="QLabel" name="txtAL">
+             <property name="text">
+              <string>Average-Link</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="AL2">
+             <item>
+              <layout class="QVBoxLayout" name="VLgraficoDendogramaAL">
+               <property name="sizeConstraint">
+                <enum>QLayout::SetMaximumSize</enum>
+               </property>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="VLgraficoAL">
+               <property name="sizeConstraint">
+                <enum>QLayout::SetMaximumSize</enum>
+               </property>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
         </layout>
        </item>
       </layout>

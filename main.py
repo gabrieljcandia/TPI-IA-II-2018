@@ -127,10 +127,12 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.spinCantElemPorCluster.setValue(self.spinCantPuntos.value())
 
     def controlSpinCantClusters(self, val): #para CantidadClusters
-        if val < self.spinCantPuntos.value() and self.spinCantPuntos.isEnabled():
+        '''if val < self.spinCantPuntos.value() and self.spinCantPuntos.isEnabled():
             self.spinCantClusters.setValue(self.spinCantPuntos.value())
         elif (val > self.spinCantPuntos.value() + self.spinCantPuntos.value() - 1) and (self.spinCantPuntos.isEnabled()):
-            self.spinCantClusters.setValue(self.spinCantPuntos.value() + self.spinCantPuntos.value() - 1)
+            self.spinCantClusters.setValue(self.spinCantPuntos.value() + self.spinCantPuntos.value() - 1)'''
+        if val > self.spinCantPuntos.value() and self.spinCantPuntos.isEnabled():
+            self.spinCantClusters.setValue(self.spinCantPuntos.value())
 
     def spinCantChanged(self, val):
         self.controlSpinCantElemPorCluster(self.spinCantElemPorCluster.value())
@@ -147,7 +149,9 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         clusters = self.miControladora.leerDatosArch(self.miControladora, ubicacionArch)
         return clusters
 
+    #se llama cuando usuario presiona boton "Generar"
     def generarGraficos(self):
+        clusters = None
         '''if self.rbDesdeArch.isChecked():
             clusters = self.extraerDatosArch()
         if self.rbGeneracionAleatoria.isChecked():
@@ -168,7 +172,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
                                                                      self.spinZmin.value(),
                                                                      self.spinZmax.value())'''
 
-        self.miIguGraficos = IGU_Graficos(self)
+        self.miIguGraficos = IGU_Graficos(self, clusters)
         #self.abrirVentanaGraficos()
 
 

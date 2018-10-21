@@ -244,7 +244,39 @@ class Cluster:
             link = self.id
         return link
 
+    def obtenerNivelDeXelementos(self, maxElemPorCluster, cantPuntos): #devuelve el maximo nivel en la jerarquia que mantenga la cantidad de puntos maxima recibida
+        nivel = 0
+        ptos = self.cantPuntos()
+        if ptos == maxElemPorCluster:
+            nivel = self.getNivel(cantPuntos)
+        elif ptos > maxElemPorCluster:
+            if self.clusters is not None:
+                nvl1 = self.clusters[0].obtenerNivelDeXelementos(maxElemPorCluster, cantPuntos)
+                nvl2 = self.clusters[1].obtenerNivelDeXelementos(maxElemPorCluster, cantPuntos)
+                if nvl1 is not 0:
+                    if nvl2 is not 0:
+                        if nvl1 > nvl2:
+                            nivel = nvl1
+                        else:
+                            nivel = nvl2
+                    else:
+                        nivel = nvl1
+                else:
+                    nivel = nvl2
+        elif ptos < maxElemPorCluster:
+            nivel = self.getNivel(cantPuntos)
+        return nivel
 
+    '''
+    tiene 3 puntos?
+    si entonces retorno
+    no entonces, si
+        mayor entonces
+            pregunto a los de adentro
+        menor entonces
+            retorno 0
+    
+    '''
 
     #############################################################
 
