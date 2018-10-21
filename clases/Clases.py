@@ -139,7 +139,21 @@ class Cluster:
                 else:
                     retorno.append(result)
         else:
-            retorno = self
+            retorno.append(self)
+        return retorno
+
+    def getClustersContenidosId(self):
+        retorno = []
+        if self.clusters is not None:
+            for x in self.clusters:
+                result = x.getClustersContenidosId()
+                if type(result) is list:
+                    for i in result:
+                        retorno.append(i)
+                else:
+                    retorno.append(result)
+        else:
+            retorno.append(self.getId())
         return retorno
 
     def obtenerCentroide(self):
