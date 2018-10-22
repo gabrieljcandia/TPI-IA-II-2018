@@ -12,15 +12,8 @@ c5 = Cluster(5.8, 5.8, 5.8)
 con.setClusters([c1, c2, c3, c4, c5])
 
 con.simple()
-#Creado el nodo con id 6 (posición 5)
-con.simple()
-#Creado el nodo con id 7 (posición 6)
-con.simple()
-#Creado el nodo con id 8 (posición 7)
-print(con.perteneceAlMismoCluster(con.getClusters()[5],con.getClusters()[6]))
-con.simple()
-#Creado el nodo con id 9 (posición 8)
-print(con.perteneceAlMismoCluster(con.getClusters()[5],con.getClusters()[6]))
+con.complete()
+con.complete()
 
 for x in con.getClusters():
     print ("El id del nodo es: ", x.getId())
@@ -29,4 +22,6 @@ for x in con.getClusters():
             if y is not None:
                 print ("El nodo ", x.getId(), " contiene a:", y.getId())
 
+#print("Los clústers ", con.getClusters()[5].getId(), " y ", con.getClusters()[6].getId() , "pertenecen al mismo clúster?:", con.perteneceAlMismoCluster(con.getClusters()[5], con.getClusters()[6]))
+print ("El superior de ", con.getClusters()[5].getId(), " es: ", con.devolverSuperior(con.getClusters()[5]).getId())
 

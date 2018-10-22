@@ -201,11 +201,10 @@ class Controladora:
 
     def devolverSuperior(self, c):
         retornar = c
-        #longitud = c.getClustersContenidos()
         for x in self.getClusters():
-            if (c in x.getClustersContenidos()):
-                #min = len(x.getClustersContenidos())
-                retornar = x
+            if (x.hasClusters()):
+                if (c in x.getClusters()):
+                    retornar = x
         return retornar
 
     def perteneceAlMismoCluster(self, c1, c2):
@@ -214,7 +213,7 @@ class Controladora:
             if x.hasClusters():
                 cAux = x.getClustersContenidosId()  # Traigo todos los elementos que posee x
 
-                if ((c1.getId() in cAux) & (c2.getId() in cAux)):
+                if ((c1.getId() in cAux) & (c2.getId() in cAux) & (not self.esSuperior(c1, c2) & (not self.esSuperior(c2, c1)))):
                     return True
         # end for
         return retorno
@@ -268,9 +267,81 @@ class Controladora:
 # miControladora.Visual.iniciarVentana()
 # miControladora.leerDatos("C:/Users/mejor/Desktop/Libro1.txt")
 
-# -----------------ESPACIO DE TRABAJO DE FABIÁ-----------------
+# -----------------ESPACIO DE TRABAJO DE FABIÁN-----------------
     def distanciaEuclideaClusters(self, c1, c2): #distancia entre 2 puntos
         dist = 1000000000000000000000000
         if (c1.getX() is not None) & (c2.getX() is not None):
             dist = math.sqrt((c1.getX() - c2.getX())**2 + (c1.getY() - c2.getY())**2)
         return dist
+
+    def complete(self):
+        max = 0
+        clustersUnirse = []  # va a tener los ids de los clusters a fusionarse
+        nuevoCluster = Cluster(None, None, None)  # es el nuevo cluster superior que se creará con el algoritmo
+        cn1 = None
+        cn2 = None
+        dist = 0
+        i = 0
+        j = 1
+
+        while i < len(self.getClusters()):
+            while j < len(self.getClusters()):
+                # Verificación de que los clusters evaluados no pertenecen al mismo cluster superior; y que el clúster 1 no es el superior del clúster 2, o que el clúster 2 no es el superior del clúster 1
+                if (not self.perteneceAlMismoCluster(self.getClusters()[i], self.getClusters()[j])):
+                    # dist = self.getClusters()[i].distanciaEuclidea(self.getClusters()[j].getX(), self.getClusters()[j].getY())
+                    dist = self.distanciaEuclideaClusters(self.getClusters()[i], self.getClusters()[j])
+                    if (dist > max):
+                        max = dist
+                        cn1 = self.getClusters()[i]
+                        cn2 = self.getClusters()[j]
+                j = j + 1
+            i = i + 1
+            j = i + 1
+        if ((cn1 is not None) & (cn2 is not None)):
+            cs1 = self.devolverSuperior(cn1)
+            #print("El valor de cs1, 1, es: ", cs1)
+            cs2 = self.devolverSuperior(cn2)
+            nuevoCluster.setClusters([cs1, cs2])
+
+            self.agregarClusterSuperior(nuevoCluster)
+
+    #Devuelve verdadero si csup es el clúster superior de c
+    #   c es el clúster inferior
+    #   csup es el clúster superior a evaluar
+    def esSuperior(self, c, csup):
+        retornar = False
+        cAux = self.devolverSuperior(c)
+        if cAux == csup:
+            retornar = True
+        return retornar
+
+    def average(self):
+        max = 0
+        clustersUnirse = []  # va a tener los ids de los clusters a fusionarse
+        nuevoCluster = Cluster(None, None, None)  # es el nuevo cluster superior que se creará con el algoritmo
+        cn1 = None
+        cn2 = None
+        dist = 0
+        i = 0
+        j = 1
+
+        while i < len(self.getClusters()):
+            while j < len(self.getClusters()):
+                # Verificación de que los clusters evaluados no pertenecen al mismo cluster superior; y que el clúster 1 no es el superior del clúster 2, o que el clúster 2 no es el superior del clúster 1
+                if (not self.perteneceAlMismoCluster(self.getClusters()[i], self.getClusters()[j])):
+                    # dist = self.getClusters()[i].distanciaEuclidea(self.getClusters()[j].getX(), self.getClusters()[j].getY())
+                    dist = self.distanciaEuclideaClusters(self.getClusters()[i], self.getClusters()[j])
+                    if (dist > max):
+                        max = dist
+                        cn1 = self.getClusters()[i]
+                        cn2 = self.getClusters()[j]
+                j = j + 1
+            i = i + 1
+            j = i + 1
+        if ((cn1 is not None) & (cn2 is not None)):
+            cs1 = self.devolverSuperior(cn1)
+            #print("El valor de cs1, 1, es: ", cs1)
+            cs2 = self.devolverSuperior(cn2)
+            nuevoCluster.setClusters([cs1, cs2])
+
+            self.agregarClusterSuperior(nuevoCluster)
