@@ -275,7 +275,7 @@ class Controladora:
         return dist
 
     def distanciaEuclideaClustersSimple(self, c1, c2): #distancia entre 2 puntos
-        dist = 1000000000000000000000000
+        dist = 0
         min = 1000000000000000000000000
         cn1 = c1.getClustersContenidos()
         cn2 = c2.getClustersContenidos()
@@ -289,7 +289,7 @@ class Controladora:
         return min
 
     def distanciaEuclideaClustersComplete(self, c1, c2): #distancia entre 2 puntos
-        dist = 1000000000000000000000000
+        dist = 0
         max = 0
         cn1 = c1.getClustersContenidos()
         cn2 = c2.getClustersContenidos()
@@ -297,10 +297,26 @@ class Controladora:
         for x in cn1:
             for y in cn2:
                 dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
+                print ("La distancia entre", x.getId(), "(", x.getCoordenadasR2(), ")", " y ", y.getId(), "(", y.getCoordenadasR2(), ")... es ", dist)
                 if dist > max:
                     max = dist
 
         return max
+
+    def distanciaEuclideaClustersAverage(self, c1, c2): #distancia entre 2 puntos
+        dist = 0
+        min = 0
+        cn1 = c1.getClustersContenidos()
+        cn2 = c2.getClustersContenidos()
+
+        for x in cn1:
+            dist = 0
+            for y in cn2:
+                dist = dist + math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
+            print ("La distancia entre", x.getId(), "(", x.getCoordenadasR2(), ")", " y ", y.getId(), "(", y.getCoordenadasR2(), ")... es ", dist)
+            if dist < min:
+                min = dist
+        return min
 
     def complete(self):
         max = 0
@@ -344,38 +360,30 @@ class Controladora:
         return retornar
 
     def average(self):
-        min = 0
+        min = 1000000000000000000000000
+        clustersUnirse = []  # va a tener los ids de los clusters a fusionarse
         nuevoCluster = Cluster(None, None, None)  # es el nuevo cluster superior que se creará con el algoritmo
         cn1 = None
         cn2 = None
-        dist = 10000000000000000
+        dist = 0
         i = 0
         j = 1
 
         while i < len(self.getClusters()):
             while j < len(self.getClusters()):
-                # Verificación de que los clusters evaluados no pertenecen al mismo cluster superior; y que el clúster 1 no es el superior del clúster 2, o que el clúster 2 no es el superior del clúster 1
-
-                #Para usar solo los superiores:
-                c1 = self.devolverSuperior(self.getClusters()[i])
-                c2 = self.devolverSuperior(self.getClusters()[j])
-                if (not self.perteneceAlMismoCluster(c1, c2)):
-                    dist = self.distanciaEuclideaClusters(c1, c2)
-                    promedio = promedio + dist
+                dist = self.distanciaEuclideaClustersAverage(self.getClusters()[i], self.getClusters()[j])
+                if (dist < min):
+                    min = dist
+                    cn1 = self.getClusters()[i]
+                    cn2 = self.getClusters()[j]
                 j = j + 1
-
-            if (dist < min):
-                min = dist
-                cn1 = self.getClusters()[i]
-                cn2 = self.getClusters()[j]
-                dist = 10000000000000000
             i = i + 1
             j = i + 1
         if ((cn1 is not None) & (cn2 is not None)):
-            cs1 = self.devolverSuperior(cn1)
-            cs2 = self.devolverSuperior(cn2)
-            nuevoCluster.setClusters([cs1, cs2])
-
+            print ("La distancia mínima es: ", min, " entre ", cn1.getId(), " y ", cn2.getId())
+            nuevoCluster.setClusters([cn1, cn2])
+            self.quitarCluster(cn1)
+            self.quitarCluster(cn2)
             self.agregarClusterSuperior(nuevoCluster)
 
 
@@ -426,30 +434,29 @@ class Controladora:
             while j < len(self.getClusters()):
                 dist = self.distanciaEuclideaClustersComplete(self.getClusters()[i], self.getClusters()[j])
                 if (dist < min):
-                    max = dist
+                    min = dist
                     cn1 = self.getClusters()[i]
                     cn2 = self.getClusters()[j]
                 j = j + 1
             i = i + 1
             j = i + 1
         if ((cn1 is not None) & (cn2 is not None)):
-            #print("El valor del cluster a unir, en la posición 0 es: ", cn1.getCoordenadasR2())
-            #print("El valor del cluster a unir, en la posición 1 es: ", cn2.getCoordenadasR2())
-
-            #print("El valor de cs1, 1, es: ", cs1)
+            print ("La distancia mínima es: ", min, " entre ", cn1.getId(), " y ", cn2.getId())
             nuevoCluster.setClusters([cn1, cn2])
             self.quitarCluster(cn1)
             self.quitarCluster(cn2)
-
             self.agregarClusterSuperior(nuevoCluster)
 
     def quitarCluster(self, c):
         self.getClusters().remove(c)
 
-    def imprimir(self):
-        if self.getClusters() is not None:
-            for x in self.getClusters():
+    def imprimir(self, c):
+        if c is not None:
+            for x in c:
                 print ("El cluster ", x.getId())
                 if x.hasClusters():
-                    print ("\t", x.getId(), " contiene: " )
+                    for y in x.getClusters():
+                        print ("\t contiene a:", y.getId())
+                    self.imprimir(x.getClusters())
+
 
