@@ -152,7 +152,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     #se llama cuando usuario presiona boton "Generar"
     def generarGraficos(self):
         clusters = None
-        '''if self.rbDesdeArch.isChecked():
+        if self.rbDesdeArch.isChecked():
             clusters = self.extraerDatosArch()
         if self.rbGeneracionAleatoria.isChecked():
             if self.rb2D.isChecked():
@@ -170,8 +170,8 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
                                                                      self.spinYmin.value(),
                                                                      self.spinYmax.value(),
                                                                      self.spinZmin.value(),
-                                                                     self.spinZmax.value())'''
-
+                                                                     self.spinZmax.value())
+        self.miControladora.setClusters(self.miControladora, clusters)
         self.miIguGraficos = IGU_Graficos(self, clusters)
         #self.abrirVentanaGraficos()
 

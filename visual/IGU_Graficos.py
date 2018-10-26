@@ -36,7 +36,7 @@ class IGU_Graficos():
 
             ####graficos V1 (Estatico)#######################################################
         #prueba de obtencion de clusters
-        Cluster.idProximo = 1
+        ''''Cluster.idProximo = 1
         cluster = self.iguPrinc.miControladora.pruebaClustersStaticos(self.iguPrinc.miControladora) #para probar el dendograma
 
         graficoSL = Figura(self.ui, self.ui.VLgraficoSL)
@@ -45,29 +45,33 @@ class IGU_Graficos():
         graficoCL.graficar(cluster)
         graficoAL = Figura(self.ui, self.ui.VLgraficoAL)
         graficoAL.graficar(cluster)
-        self.graficarDendograma(cluster)
+        self.graficarDendograma(cluster)'''
 
             ####graficos V2 (Funcional)#######################################################
         #calculo de clusters (logica)
-        '''
-        self.clusterSL = cluster.obtenerSL()
-        self.clusterCL = cluster.obtenerCL()
+
+        while self.iguPrinc.miControladora.getClusters().__len__ > 1:
+            self.iguPrinc.miControladora.simple2()
+
+        self.clusterSL = self.iguPrinc.miControladora.getClusters()
+
+        '''self.clusterCL = cluster.obtenerCL()
         self.clusterAL = cluster.obtenerAL()
         '''
         #graficar clusers por metodo
-        '''
+
         graficoSL = Figura(self.ui, self.ui.VLgraficoSL)
         graficoSL.graficar(self.clusterSL)
-        graficoCL = Figura(self.ui, self.ui.VLgraficoCL)
+        '''graficoCL = Figura(self.ui, self.ui.VLgraficoCL)
         graficoCL.graficar(self.clusterCL)
         graficoAL = Figura(self.ui, self.ui.VLgraficoAL)
         graficoAL.graficar(self.clusterAL)
         self.graficarDendograma(cluster)
         '''
         #luego se grafica el dendograma. Modificar metodo "graficarDendograma" para que pase los clusters adecuados
-        '''
-        self.graficarDendogramaS()
-        '''
+
+        self.graficarDendogramas(self.clusterSL)
+
 
     #funciones spins
     def controlSpinCantClusters(self, val): #para CantidadClusters
@@ -106,7 +110,7 @@ class IGU_Graficos():
 
 
     #funciones graficos
-    def graficarDendograma(self, cluster):
+    def graficarDendogramas(self, cluster):
         if self.ui.rbCantClusters.isChecked():
             cantClusters = self.iguPrinc.spinCantClusters.value()
             cantElemPorCluster = None
@@ -115,11 +119,11 @@ class IGU_Graficos():
             cantClusters = None
 
         self.dendogramaSL = Figura(self.ui, self.ui.VLgraficoDendogramaSL)
-        self.dendogramaSL.graficarDendograma(cluster, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
-        self.dendogramaCL = Figura(self.ui, self.ui.VLgraficoDendogramaCL)
-        self.dendogramaCL.graficarDendograma(cluster, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
-        self.dendogramaAL = Figura(self.ui, self.ui.VLgraficoDendogramaAL)
-        self.dendogramaAL.graficarDendograma(cluster, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
+        self.dendogramaSL.graficarDendogramas(cluster, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
+        #self.dendogramaCL = Figura(self.ui, self.ui.VLgraficoDendogramaCL)
+        #self.dendogramaCL.graficarDendogramas(cluster, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
+        #self.dendogramaAL = Figura(self.ui, self.ui.VLgraficoDendogramaAL)
+        #self.dendogramaAL.graficarDendogramas(cluster, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
 
 
     def editCantClusters(self):
@@ -133,6 +137,6 @@ class IGU_Graficos():
             cantElemPorCluster = self.ui.spinCantElemPorCluster.value()
             cantClusters = None
 
-        self.dendogramaSL.graficarDendograma(cluster, cantClusters, cantElemPorCluster)
-        self.dendogramaCL.graficarDendograma(cluster, cantClusters, cantElemPorCluster)
-        self.dendogramaAL.graficarDendograma(cluster, cantClusters, cantElemPorCluster)
+        self.dendogramaSL.graficarDendogramas(cluster, cantClusters, cantElemPorCluster)
+        self.dendogramaCL.graficarDendogramas(cluster, cantClusters, cantElemPorCluster)
+        self.dendogramaAL.graficarDendogramas(cluster, cantClusters, cantElemPorCluster)
