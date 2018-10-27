@@ -23,7 +23,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         #variables
-        self.miControladora = Controladora.Controladora
+        self.miControladora = Controladora.Controladora()
 
         #botones
         self.btnSelectFile.clicked.connect(self.obtenerUbicacionArch)
@@ -156,22 +156,20 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             clusters = self.extraerDatosArch()
         if self.rbGeneracionAleatoria.isChecked():
             if self.rb2D.isChecked():
-                clusters = self.miControladora.generarPuntosAleatorios2D(self.miControladora,
-                                                                     self.spinCantPuntos.value(),
+                clusters = self.miControladora.generarPuntosAleatorios2D(self.spinCantPuntos.value(),
                                                                      self.spinXmin.value(),
                                                                      self.spinXmax.value(),
                                                                      self.spinYmin.value(),
                                                                      self.spinYmax.value())
             if self.rb3D.isChecked():
-                clusters = self.miControladora.generarPuntosAleatorios3D(self.miControladora,
-                                                                     self.spinCantPuntos.value(),
+                clusters = self.miControladora.generarPuntosAleatorios3D(self.spinCantPuntos.value(),
                                                                      self.spinXmin.value(),
                                                                      self.spinXmax.value(),
                                                                      self.spinYmin.value(),
                                                                      self.spinYmax.value(),
                                                                      self.spinZmin.value(),
                                                                      self.spinZmax.value())
-        self.miControladora.setClusters(self.miControladora, clusters)
+        self.miControladora.setClusters(clusters)
         self.miIguGraficos = IGU_Graficos(self, clusters)
         #self.abrirVentanaGraficos()
 

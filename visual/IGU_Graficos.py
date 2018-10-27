@@ -50,18 +50,21 @@ class IGU_Graficos():
             ####graficos V2 (Funcional)#######################################################
         #calculo de clusters (logica)
 
-        while self.iguPrinc.miControladora.getClusters().__len__ > 1:
+        #while len(self.iguPrinc.miControladora.getClusters()) > 1:
+        for i in range(9):
             self.iguPrinc.miControladora.simple2()
 
-        self.clusterSL = self.iguPrinc.miControladora.getClusters()
+        self.clusterSL = self.iguPrinc.miControladora.getClusters()[0]
+        #Cluster.idProximo = 1
+        #self.clusterSL = self.iguPrinc.miControladora.pruebaClustersStaticos()
 
         '''self.clusterCL = cluster.obtenerCL()
         self.clusterAL = cluster.obtenerAL()
         '''
         #graficar clusers por metodo
 
-        graficoSL = Figura(self.ui, self.ui.VLgraficoSL)
-        graficoSL.graficar(self.clusterSL)
+        self.graficoSL = Figura(self.ui, self.ui.VLgraficoSL)
+        self.graficoSL.graficarCluster(self.clusterSL, self.ui.spinCantElemPorCluster.value())
         '''graficoCL = Figura(self.ui, self.ui.VLgraficoCL)
         graficoCL.graficar(self.clusterCL)
         graficoAL = Figura(self.ui, self.ui.VLgraficoAL)
@@ -119,24 +122,28 @@ class IGU_Graficos():
             cantClusters = None
 
         self.dendogramaSL = Figura(self.ui, self.ui.VLgraficoDendogramaSL)
-        self.dendogramaSL.graficarDendogramas(cluster, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
+        self.dendogramaSL.graficarDendogramaHastaElementos(cluster, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
         #self.dendogramaCL = Figura(self.ui, self.ui.VLgraficoDendogramaCL)
-        #self.dendogramaCL.graficarDendogramas(cluster, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
+        #self.dendogramaCL.graficarDendogramaHastaElementos(cluster, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
         #self.dendogramaAL = Figura(self.ui, self.ui.VLgraficoDendogramaAL)
-        #self.dendogramaAL.graficarDendogramas(cluster, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
+        #self.dendogramaAL.graficarDendogramaHastaElementos(cluster, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
 
 
     def editCantClusters(self):
-        Cluster.idProximo = 1
-        cluster = self.iguPrinc.miControladora.pruebaClustersStaticos(self.iguPrinc.miControladora) #para probar el dendograma
+        #Cluster.idProximo = 1
+        #cluster = self.iguPrinc.miControladora.pruebaClustersStaticos() #para probar el dendograma
 
         if self.ui.rbCantClusters.isChecked():
             cantClusters = self.ui.spinCantClusters.value()
             cantElemPorCluster = None
+            self.dendogramaSL.graficarDendogramaHastaCluster(self.clusterSL, cantClusters, cantElemPorCluster)
         elif self.ui.rbElemPorCluster.isChecked():
             cantElemPorCluster = self.ui.spinCantElemPorCluster.value()
             cantClusters = None
+            self.dendogramaSL.graficarDendogramaHastaElementos(self.clusterSL, cantClusters, cantElemPorCluster)
 
-        self.dendogramaSL.graficarDendogramas(cluster, cantClusters, cantElemPorCluster)
-        self.dendogramaCL.graficarDendogramas(cluster, cantClusters, cantElemPorCluster)
-        self.dendogramaAL.graficarDendogramas(cluster, cantClusters, cantElemPorCluster)
+
+        #self.dendogramaCL.graficarDendogramaHastaElementos(cluster, cantClusters, cantElemPorCluster)
+        #self.dendogramaAL.graficarDendogramaHastaElementos(cluster, cantClusters, cantElemPorCluster)
+
+        self.graficoSL.graficarCluster(self.clusterSL, self.ui.spinCantElemPorCluster.value())

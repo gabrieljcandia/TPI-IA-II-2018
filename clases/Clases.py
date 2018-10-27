@@ -267,16 +267,43 @@ class Cluster:
             nivel = self.getNivel(cantPuntos)
         return nivel
 
-    '''
-    tiene 3 puntos?
-    si entonces retorno
-    no entonces, si
-        mayor entonces
-            pregunto a los de adentro
-        menor entonces
-            retorno 0
-    
-    '''
+    #devuelve todos los clusters contenidos en el cluster actual, ordenados por ID
+    def getClustersOrdenados(self):
+        clusters = self.getClustersContenidosBruto()
+        clustersOrdenados = []
+        for i in range(clusters.__len__()):
+            for cluster in clusters:
+                if cluster.getId() == i:
+                    clustersOrdenados.append(cluster)
+        clustersOrdenados.append(self)
+        return clustersOrdenados
+
+    #devuelve absolutamente todos los clusters contenidos en el actual
+    def getClustersContenidosBruto(self):
+        retorno = []
+        if self.clusters is not None:
+            for x in self.clusters:
+                result = x.getClustersContenidosBruto()
+                if type(result) is list:
+                    for i in result:
+                        retorno.append(i)
+                else:
+                    retorno.append(result)
+        retorno.append(self)
+        return retorno
+
+    def getPadre(self, clusters, cantPuntos):
+        padre = None
+        for cluster in clusters:
+            if cluster.getClusters() is not None:
+                for cl in cluster.getClusters():
+                    if cl.getId() > self.getId(): #sino nunca sera padre
+                        for clusterContenido in cl.getClustersContenidosBruto():
+                            if clusterContenido.getId() == self.getId():
+                                if padre is None or cl.getNivel(cantPuntos) < padre.getNivel(cantPuntos):
+                                    padre = cl
+        return padre
+
 
     #############################################################
 
