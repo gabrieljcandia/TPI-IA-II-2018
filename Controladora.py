@@ -305,7 +305,8 @@ class Controladora:
 
     def distanciaEuclideaClustersAverage(self, c1, c2): #distancia entre 2 puntos
         dist = 0
-        min = 0
+        min = 1000000000000000000000000
+        cantidad = 0
         cn1 = c1.getClustersContenidos()
         cn2 = c2.getClustersContenidos()
 
@@ -313,6 +314,8 @@ class Controladora:
             dist = 0
             for y in cn2:
                 dist = dist + math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
+                cantidad = cantidad + 1
+            dist = dist/cantidad
             print ("La distancia entre", x.getId(), "(", x.getCoordenadasR2(), ")", " y ", y.getId(), "(", y.getCoordenadasR2(), ")... es ", dist)
             if dist < min:
                 min = dist
@@ -400,9 +403,6 @@ class Controladora:
             while j < len(self.getClusters()):
                 dist = self.distanciaEuclideaClustersSimple(self.getClusters()[i], self.getClusters()[j])
                 if (dist < min):
-                    #print("Nueva distancia mínima: ", dist)
-                    #print("Entre los clústers: ", self.getClusters()[i].getCoordenadasR2(), ", y ",
-                    #self.getClusters()[j].getCoordenadasR2())
                     min = dist
                     cn1 = self.getClusters()[i]
                     cn2 = self.getClusters()[j]
@@ -410,10 +410,6 @@ class Controladora:
             i = i + 1
             j = i + 1
         if ((cn1 is not None) & (cn2 is not None)):
-            #print("El valor del cluster a unir, en la posición 0 es: ", cn1.getCoordenadasR2())
-            #print("El valor del cluster a unir, en la posición 1 es: ", cn2.getCoordenadasR2())
-
-            #print("El valor de cs1, 1, es: ", cs1)
             nuevoCluster.setClusters([cn1, cn2])
             self.quitarCluster(cn1)
             self.quitarCluster(cn2)

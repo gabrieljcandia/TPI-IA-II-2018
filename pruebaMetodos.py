@@ -12,10 +12,10 @@ c6 = Cluster(0.45, 0.30, 0)
 
 con.setClusters([c1, c2, c3, c4, c5, c6])
 
-con.complete2()
-con.complete2()
-con.complete2()
-con.complete2()
+con.average()
+con.average()
+con.average()
+con.average()
 
 #con.imprimir(con.getClusters())
 
