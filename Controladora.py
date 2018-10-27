@@ -164,41 +164,6 @@ class Controladora:
         agregar.append(nc)
         self.setClusters(agregar)
 
-    def simple(self):
-        min = 1000000000000000000000000
-        clustersUnirse = []  # va a tener los ids de los clusters a fusionarse
-        nuevoCluster = Cluster(None, None, None)  # es el nuevo cluster superior que se creará con el algoritmo
-        cn1 = None
-        cn2 = None
-        dist = 0
-        i = 0
-        j = 1
-        while i < len(self.getClusters()):
-            while j < len(self.getClusters()):
-                # Verificación de que los clusters evaluados no pertenecen al mismo cluster superior
-                if (not self.perteneceAlMismoCluster(self.getClusters()[i], self.getClusters()[j])):
-                    # dist = self.getClusters()[i].distanciaEuclidea(self.getClusters()[j].getX(), self.getClusters()[j].getY())
-                    dist = self.distanciaEuclideaClusters(self.getClusters()[i], self.getClusters()[j])
-                    if (dist < min):
-                        #print("Nueva distancia mínima: ", dist)
-                        #print("Entre los clústers: ", self.getClusters()[i].getCoordenadasR2(), ", y ",
-                              #self.getClusters()[j].getCoordenadasR2())
-                        min = dist
-                        cn1 = self.getClusters()[i]
-                        cn2 = self.getClusters()[j]
-                j = j + 1
-            i = i + 1
-            j = i + 1
-        if ((cn1 is not None) & (cn2 is not None)):
-            #print("El valor del cluster a unir, en la posición 0 es: ", cn1.getCoordenadasR2())
-            #print("El valor del cluster a unir, en la posición 1 es: ", cn2.getCoordenadasR2())
-            cs1 = self.devolverSuperior(cn1)
-            #print("El valor de cs1, 1, es: ", cs1)
-            cs2 = self.devolverSuperior(cn2)
-            nuevoCluster.setClusters([cs1, cs2])
-
-            self.agregarClusterSuperior(nuevoCluster)
-
     def devolverSuperior(self, c):
         retornar = c
         for x in self.getClusters():
@@ -231,7 +196,6 @@ class Controladora:
                     retorno = dist
 
         return retorno
-
 
     def generarPuntosAleatorios3D(self, cant, Xmin, Xmax, Ymin, Ymax, Zmin, Zmax):
         clusters = []
@@ -321,37 +285,6 @@ class Controladora:
                 min = dist
         return min
 
-    def complete(self):
-        max = 0
-        clustersUnirse = []  # va a tener los ids de los clusters a fusionarse
-        nuevoCluster = Cluster(None, None, None)  # es el nuevo cluster superior que se creará con el algoritmo
-        cn1 = None
-        cn2 = None
-        dist = 0
-        i = 0
-        j = 1
-
-        while i < len(self.getClusters()):
-            while j < len(self.getClusters()):
-                # Verificación de que los clusters evaluados no pertenecen al mismo cluster superior; y que el clúster 1 no es el superior del clúster 2, o que el clúster 2 no es el superior del clúster 1
-                if (not self.perteneceAlMismoCluster(self.getClusters()[i], self.getClusters()[j])):
-                    # dist = self.getClusters()[i].distanciaEuclidea(self.getClusters()[j].getX(), self.getClusters()[j].getY())
-                    dist = self.distanciaEuclideaClusters(self.getClusters()[i], self.getClusters()[j])
-                    if (dist > max):
-                        max = dist
-                        cn1 = self.getClusters()[i]
-                        cn2 = self.getClusters()[j]
-                j = j + 1
-            i = i + 1
-            j = i + 1
-        if ((cn1 is not None) & (cn2 is not None)):
-            cs1 = self.devolverSuperior(cn1)
-            #print("El valor de cs1, 1, es: ", cs1)
-            cs2 = self.devolverSuperior(cn2)
-            nuevoCluster.setClusters([cs1, cs2])
-
-            self.agregarClusterSuperior(nuevoCluster)
-
     #Devuelve verdadero si csup es el clúster superior de c
     #   c es el clúster inferior
     #   csup es el clúster superior a evaluar
@@ -390,7 +323,7 @@ class Controladora:
             self.agregarClusterSuperior(nuevoCluster)
 
 
-    def simple2(self):
+    def simple(self):
         min = 1000000000000000000000000
         clustersUnirse = []  # va a tener los ids de los clusters a fusionarse
         nuevoCluster = Cluster(None, None, None)  # es el nuevo cluster superior que se creará con el algoritmo
@@ -416,7 +349,7 @@ class Controladora:
 
             self.agregarClusterSuperior(nuevoCluster)
 
-    def complete2(self):
+    def complete(self):
         min = 1000000000000000000000000
         clustersUnirse = []  # va a tener los ids de los clusters a fusionarse
         nuevoCluster = Cluster(None, None, None)  # es el nuevo cluster superior que se creará con el algoritmo
