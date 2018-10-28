@@ -146,12 +146,13 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def extraerDatosArch(self):
         ubicacionArch = self.txtUbicacion.toPlainText()
-        clusters = self.miControladora.leerDatosArch(self.miControladora, ubicacionArch)
+        clusters = self.miControladora.leerDatosArch(ubicacionArch)
         return clusters
 
     #se llama cuando usuario presiona boton "Generar"
     def generarGraficos(self):
         clusters = None
+        Cluster.idProximo = 1 #inicializa la ID de los clusters
         if self.rbDesdeArch.isChecked():
             clusters = self.extraerDatosArch()
         if self.rbGeneracionAleatoria.isChecked():

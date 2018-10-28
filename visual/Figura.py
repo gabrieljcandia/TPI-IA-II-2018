@@ -129,7 +129,7 @@ class Figura(QDialog):
         self.ax.scatter(x, y, s=None, color=[cluster.getRGB()])
 
     def graficarDendogramaHastaElementos(self, cluster, maxClusters=None, maxElemPorCluster=None): #recibe como parametro inicial el cluster de mayor nivel
-        self.cluster = cluster
+        self.cluster = cluster #para usar al final del metodo, porque en el camino se modifica su contenido
         self.figure.clear()
         self.ax = self.figure.add_subplot(111)
 
@@ -156,8 +156,8 @@ class Figura(QDialog):
                 clustersImpresos.append(copy.deepcopy(cluster))
 
         clustersContenidos = self.cluster.getClustersContenidosBruto()
-        for cl in clustersContenidos:
-            if cl.getId() <= cantPuntos: #grafica puntos, correspondientes a los puntos originales (de nivel 0 en la jerarquia)
+        for cl in reversed(clustersContenidos): #imprime los puntos del dendograma, correspondientes a los puntos originales (de nivel 0 en la jerarquia)
+            if cl.getId() <= cantPuntos:
                 self.graficarPuntoDendograma(cl)
 
         plt.autoscale(enable=True, axis='both', tight=None) #habilita autoscale
@@ -219,13 +219,60 @@ class Figura(QDialog):
             self.graficarPuntoDendograma(cluster)
 
     def graficarDendogramaClusterLineas(self, cluster, cantPuntos):
+        modificarAltura = False
         nivel = cluster.getNivel(cantPuntos)
         clIzq = cluster.getClusterIzq()
         clDer = cluster.getClusterDer()
+        '''if clIzq is clDer:
+            modificarAltura = True
+            # ---borrar este comentario---- clDer es el que tiene la menor media de sus puntos max y min (es solo una convencion)
+            if cluster.getClusters() is not None:
+                for cl in cluster.getClusters(): #toma como clIzq el cluster distinto de clDer
+                    if cl is not clDer:
+                        clIzq = cl'''
+        if clIzq is clDer:
+            clIzq = cluster.getClusterIzqIguales()
+            clDer = cluster.getClusterDerIguales()
+
+            xIzq = clIzq.getLinkIguales()
+            xDer = clDer.getLinkIguales()
+
+            modificarAltura = True
+
         hIzq = clIzq.getNivel(cantPuntos)
         hDer = clDer.getNivel(cantPuntos)
-        xIzq = clIzq.getLink()
-        xDer = clDer.getLink()
+
+        if modificarAltura is True:
+            '''puntosXizq = clIzq.getClustersContenidosId()  #ids de nodos hoja (nivel 0)
+            puntosXder = clDer.getClustersContenidosId()  #ids de nodos hoja (nivel 0)
+
+            xIzq = 0
+            for puntoIzq in puntosXizq: #media de los nodos hoja de cada cluster
+                if xIzq == 0:
+                    xIzq = puntoIzq
+                else:
+                    xIzq = (xIzq + puntoIzq) / 2
+
+            xDer = 0
+            for puntoDer in puntosXder: #media de los nodos hoja de cada cluster
+                if xDer == 0:
+                    xDer = puntoDer
+                else:
+                    xDer = (xDer + puntoDer) / 2'''
+
+            '''xIzqI = clIzq.getClusterIzq().getLink()
+            xIzqD = clIzq.getClusterIzq().getLink()
+            xIzq = (xIzqI + xIzqD) / 2
+
+            xDerI = clDer.getClusterDer().getLink()
+            xDerD = clDer.getClusterDer().getLink()
+            xDer = (xDerI + xDerD) / 2'''
+
+            #xIzq = clIzq.getLink()
+            #xDer = clDer.getLink()
+        else:
+            xIzq = clIzq.getLink()
+            xDer = clDer.getLink()
         self.ax.plot([xIzq, xIzq, xDer, xDer],[hIzq, nivel, nivel, hDer], color=cluster.getRGB())
 
     def graficarCirculo(self, cluster):

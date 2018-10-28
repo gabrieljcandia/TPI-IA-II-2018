@@ -211,6 +211,30 @@ class Cluster:
             ClDer = self
         return ClDer
 
+    def getClusterIzqIguales(self):
+        if self.clusters is not None:
+            clIzq = self.getClusters()[0]
+        else:
+            clIzq = self
+
+        '''xIzqI = clIzq.getClusterIzq().getLink()
+        xIzqD = clIzq.getClusterIzq().getLink()
+        xIzq = (xIzqI + xIzqD) / 2'''
+
+        return clIzq
+
+    def getClusterDerIguales(self):
+        if self.clusters is not None:
+            clDer = self.getClusters()[1]
+        else:
+            clDer = self
+
+        '''xIzqI = clIzq.getClusterIzq().getLink()
+        xIzqD = clIzq.getClusterIzq().getLink()
+        xIzq = (xIzqI + xIzqD) / 2'''
+
+        return clDer
+
     def getMenorId(self): #devuelve la menor ID, de entre las IDs de todos los clusters inferiores
         menor = 999999999
         if self.clusters is not None:
@@ -238,6 +262,26 @@ class Cluster:
 
             linkIzq = clIzq.getLink()
             linkDer = clDer.getLink()
+
+            link = (linkIzq + linkDer) / 2
+        else:
+            link = self.id
+        return link
+
+    def getLinkIguales(self): #devuelve la consecucion de medias entre los puntos de nivel 0 de cada cluster (devuelve la posicion en X, interseccion horizontal-vertical entre nuevo cluster y uno anterior)
+        if self.clusters is not None:
+            clIzq = self.getClusterIzq()
+            clDer = self.getClusterDer()
+
+            if clIzq is clDer:
+                clIzq = self.getClusterIzqIguales()
+                clDer = self.getClusterDerIguales()
+
+                linkIzq = clIzq.getLinkIguales()
+                linkDer = clDer.getLinkIguales()
+            else:
+                linkIzq = clIzq.getLink()
+                linkDer = clDer.getLink()
 
             link = (linkIzq + linkDer) / 2
         else:
