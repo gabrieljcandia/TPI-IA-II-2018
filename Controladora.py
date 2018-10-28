@@ -468,12 +468,20 @@ class Controladora:
 
         for x in cn1:
             for y in cn2:
-                if tipoDistancia is "euclidea":
-                    dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
-                if tipoDistancia is "manhattan":
-                    dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY())
-                if tipoDistancia is "minchowski":
-                    dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p)**(1/p)
+                if (c1.getZ() is None) | (c2.getZ() is None):
+                    if tipoDistancia is "euclidea":
+                        dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
+                    if tipoDistancia is "manhattan":
+                        dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY())
+                    if tipoDistancia is "minchowski":
+                        dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p)**(1/p)
+                else: #Para R3
+                    if tipoDistancia is "euclidea":
+                        dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2 + (x.getZ() - y.getZ())**2)
+                    if tipoDistancia is "manhattan":
+                        dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY()) + math.fabs(x.getZ() - y.getZ())
+                    if tipoDistancia is "minchowski":
+                        dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p + (x.getZ() - y.getZ())**p)**(1/p)
 
                 if dist < min:
                     min = dist
@@ -487,12 +495,20 @@ class Controladora:
 
         for x in cn1:
             for y in cn2:
-                if tipoDistancia is "euclidea":
-                    dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
-                if tipoDistancia is "manhattan":
-                    dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY())
-                if tipoDistancia is "minchowski":
-                    dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p)**(1/p)
+                if (c1.getZ() is None) | (c2.getZ() is None):
+                    if tipoDistancia is "euclidea":
+                        dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
+                    if tipoDistancia is "manhattan":
+                        dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY())
+                    if tipoDistancia is "minchowski":
+                        dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p)**(1/p)
+                else: #Para R3
+                    if tipoDistancia is "euclidea":
+                        dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2 + (x.getZ() - y.getZ())**2)
+                    if tipoDistancia is "manhattan":
+                        dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY()) + math.fabs(x.getZ() - y.getZ())
+                    if tipoDistancia is "minchowski":
+                        dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p + (x.getZ() - y.getZ())**p)**(1/p)
 
                 if dist > max:
                     max = dist
@@ -508,12 +524,21 @@ class Controladora:
         for x in cn1:
             dist = 0
             for y in cn2:
-                if tipoDistancia is "euclidea":
-                    dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
-                if tipoDistancia is "manhattan":
-                    dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY())
-                if tipoDistancia is "minchowski":
-                    dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p)**(1/p)
+                if (c1.getZ() is None) | (c2.getZ() is None):
+                    if tipoDistancia is "euclidea":
+                        dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
+                    if tipoDistancia is "manhattan":
+                        dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY())
+                    if tipoDistancia is "minchowski":
+                        dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p)**(1/p)
+
+                else: #Para R3
+                    if tipoDistancia is "euclidea":
+                        dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2 + (x.getZ() - y.getZ())**2)
+                    if tipoDistancia is "manhattan":
+                        dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY()) + math.fabs(x.getZ() - y.getZ())
+                    if tipoDistancia is "minchowski":
+                        dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p + (x.getZ() - y.getZ())**p)**(1/p)
                 cantidad = cantidad + 1
             dist = dist/cantidad
             print ("La distancia entre", x.getId(), "(", x.getCoordenadasR2(), ")", " y ", y.getId(), "(", y.getCoordenadasR2(), ")... es ", dist)
