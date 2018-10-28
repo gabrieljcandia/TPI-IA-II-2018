@@ -1,0 +1,45 @@
+
+IGU:
+	* Durante la carga: una barra que cargue, un título de "cargando", y textos relacionados a la IA que aleatoriamente se vayan mostrando, desvaneciendose entre sí para intercalar cada x tiempo.
+	* Permitir detener y pausar la carga.
+	* Informar qué se calcula en cada momento (tipo un log mientras carga, que se habilite si selecciona "detalles" en la IGU "cargando").
+	* Controles para todos los imputs (incluso archivos).
+	* Configuración: usuario tiene el control
+		- Realizar automáticamente los cálculos al seleccionar archivo, o una vez por cada método?
+		- Habilitar pestaña "avanzado", que brinde más detalles.
+	* Teclas acceso rápido.
+	* Organización jerárquica? Primero en alto nivel, y entrando...
+	* Pestaña "a cerca de", que abra una ventana indicando lo que hace el sistema, para qué fue creado, materia, uni, etc.
+	* Dibujar árbol jerárquico.
+	* 2 modos ingresar datos: archivo y aleatorio.
+	* Permitir exportar el cluster generado.
+
+Lógica:
+	* Técnicas para conocer cantidad ideal de clusters: qué tan diferentes (y no parecidos) son los datos.
+	* Calcular calidad de cada método según criterios de similitud.
+	* ¿Agregar k-means?
+	* Poder elegir tipo de distancia:
+		* Euclídea (ya la usamos)
+		* Manhattan
+		* Minkowski
+	* Métricas (pueden ayudar a determinar la cantidad adecuada de clusters en un conjunto de datos)
+		* Índice de cohesión intra cluster SSW (Sum of Squares Within).
+		* Índice CH (Calinski-Harabasz).
+		* Coeficiente Silueta-CH (Rousseeuw)
+
+LO QUE FALTA:
+	IGU:
+		* Hacer/arreglar metodo mostrar clusters cuando limite es "cantidad de clusters".
+		* Comunicar desde visual a lógica el tipo de algoritmo y distancia a utilizar.
+		* Ventana "EN PROCESO" mientras se calcula. En otro hilo?
+		3D:
+			* Llamar a métodos de 2D o 3D según: |datos archivo / elección usuario| 
+			* Llamar metodos apropiados para obtener los clusters en 3D.
+			* Método/s para graficar clusters (dendograma no cambia).
+	
+	LÓGICA:
+		* Método/s que devuelvan, según el tipo de algoritmo y la distancia, el cluster de mayor nivel.
+		* Método/s para lo mismo, pero en 3D.
+		* Leer archivos con datos de 3D. Guardar en lógica si datos son 2D o 3D para diferenciar en visual.
+		* Controlar errores en archivos (try-catch).
+
