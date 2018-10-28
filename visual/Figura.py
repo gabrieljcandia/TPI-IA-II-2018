@@ -84,7 +84,7 @@ class Figura(QDialog):
         plt.autoscale(enable=True, axis='both', tight=None) #habilita autoscale
         self.canvas.draw()'''
 
-    def graficarCluster(self, cluster, maxElemPorCluster=None):
+    def graficarCluster(self, cluster, maxElemPorCluster=None, maxClusters=None):
         self.figure.clear()
         self.ax = self.figure.add_subplot(111)
         clustersOrdenados = cluster.getClustersOrdenados()
@@ -92,22 +92,41 @@ class Figura(QDialog):
         # recorrer clustersOrdenados y tomar maximo cluster con cant elementos menor al maximo
         # tomar los clusters de mayor nivel que agrupen a los clusters menores o iguales al maximo
 
-        max = 0
-        clusters = []
-        for cluster in clustersOrdenados:
-            if cluster.cantPuntos() <= maxElemPorCluster:
-                max = cluster.getId()
-                clusters.insert(0, cluster) #inserta "cluster" al inicio de "clusters"
+        if maxElemPorCluster is not None:
+            max = 0
+            clusters = []
+            for cluster in clustersOrdenados:
+                if cluster.cantPuntos() <= maxElemPorCluster:
+                    max = cluster.getId()
+                    clusters.insert(0, cluster) #inserta "cluster" al inicio de "clusters"
 
-        clustersImpresos = [] #ID de los clusters de nivel 0 que ya se han imprimido
-        for cluster in clusters:
-            # si puntos del cluster no se han imprimido previamente, imprimirlos
+            clustersImpresos = [] #ID de los clusters de nivel 0 que ya se han impreso
+            for cluster in clusters:
+                # si puntos del cluster no se han imprimido previamente, imprimirlos
 
-            # inicializar lista
-            # si puntos del cluster no se encuentran en lista, imprimir puntos y guardarlos en lista
-            if not self.clusterImpreso(cluster, clustersImpresos): # cluster no esta en clustersImpresos:
-                self.graficarPuntosCluster(cluster)
-                clustersImpresos.append(cluster)
+                # inicializar lista
+                # si puntos del cluster no se encuentran en lista, imprimir puntos y guardarlos en lista
+                if not self.clusterImpreso(cluster, clustersImpresos): # cluster no esta en clustersImpresos:
+                    self.graficarPuntosCluster(cluster)
+                    clustersImpresos.append(cluster)
+
+        '''clustersImpresos = [] #id de clusters impresos
+        elif maxClusters is not None:
+            for cluster in clustersOrdenados[:maxClusters]:
+                self.graficarPuntosCluster(cluster)'''
+
+        if maxClusters is not None:
+            if maxClusters == 1:
+                self.graficarPuntosCluster(cluster) #grafica cluster de nivel mas alto
+            else:
+                self.graficarPuntosCluster(cluster) #grafica cluster de nivel mas alto
+
+                #clusterInverso = reversed(cluster.getClustersOrdenados())
+                clusterInverso = cluster.getClustersOrdenados()
+                for cl in clusterInverso:
+                    #if (cl.getId() < cluster.getId()) and (cl.getId() >= (cluster.getId() - maxClusters - 2)):
+                    if (cl.getId() < cluster.getId()) and (cl.getId() <= (cluster.getId() - maxClusters + 1)):
+                        self.graficarPuntosCluster(cl)
 
         plt.autoscale(enable=True, axis='both', tight=None) #habilita autoscale
         self.canvas.draw()

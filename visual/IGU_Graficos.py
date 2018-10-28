@@ -149,6 +149,13 @@ class IGU_Graficos():
         self.graficarClusters()
 
     def graficarClusters(self):
-        self.graficoSL.graficarCluster(self.clusterSL, self.ui.spinCantElemPorCluster.value())
-        self.graficoCL.graficarCluster(self.clusterCL, self.ui.spinCantElemPorCluster.value())
-        self.graficoAL.graficarCluster(self.clusterAL, self.ui.spinCantElemPorCluster.value())
+        if self.ui.rbCantClusters.isChecked():
+            cantClusters = self.ui.spinCantClusters.value()
+            cantElemPorCluster = None
+        elif self.ui.rbElemPorCluster.isChecked():
+            cantElemPorCluster = self.ui.spinCantElemPorCluster.value()
+            cantClusters = None
+
+        self.graficoSL.graficarCluster(self.clusterSL, cantElemPorCluster, cantClusters)
+        self.graficoCL.graficarCluster(self.clusterCL, cantElemPorCluster, cantClusters)
+        self.graficoAL.graficarCluster(self.clusterAL, cantElemPorCluster, cantClusters)

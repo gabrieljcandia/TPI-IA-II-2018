@@ -984,21 +984,21 @@
             <number>12</number>
            </property>
            <item>
-            <widget class="QRadioButton" name="radioButton">
+            <widget class="QRadioButton" name="rbEuclidea">
              <property name="text">
               <string>Euclídea</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QRadioButton" name="radioButton_3">
+            <widget class="QRadioButton" name="rbManhattan">
              <property name="text">
               <string>Manhattan</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QRadioButton" name="radioButton_2">
+            <widget class="QRadioButton" name="rbMinkowski">
              <property name="text">
               <string>Minkowski</string>
              </property>

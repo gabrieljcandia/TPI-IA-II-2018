@@ -29,7 +29,7 @@ Lógica:
 
 LO QUE FALTA:
 	IGU:
-		* Hacer/arreglar metodo mostrar clusters cuando limite es "cantidad de clusters".
+		- Hacer/arreglar metodo mostrar clusters cuando limite es "cantidad de clusters".
 		* Comunicar desde visual a lógica el tipo de algoritmo y distancia a utilizar.
 		* Ventana "EN PROCESO" mientras se calcula. En otro hilo?
 		3D:
