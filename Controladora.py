@@ -379,6 +379,34 @@ class Controladora:
     def quitarCluster(self, c):
         self.getClusters().remove(c)
 
+    def distanciaManhattanSingle(self, c1, c2):
+        dist = 0
+        min = 1000000000000000000000000
+        cn1 = c1.getClustersContenidos()
+        cn2 = c2.getClustersContenidos()
+
+        for x in cn1:
+            for y in cn2:
+                dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY())
+                if dist < min:
+                    min = dist
+
+        return min
+
+    def distanciaMinkowski(self, c1, c2, p):
+        dist = 0
+        min = 1000000000000000000000000
+        cn1 = c1.getClustersContenidos()
+        cn2 = c2.getClustersContenidos()
+
+        for x in cn1:
+            for y in cn2:
+                dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p)**(1/p)
+                if dist < min:
+                    min = dist
+
+        return min
+
     def imprimir(self, c):
         if c is not None:
             for x in c:
