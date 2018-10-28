@@ -238,6 +238,7 @@ class Controladora:
             dist = math.sqrt((c1.getX() - c2.getX())**2 + (c1.getY() - c2.getY())**2)
         return dist
 
+#Borrar función
     def distanciaEuclideaClustersSimple(self, c1, c2): #distancia entre 2 puntos
         dist = 0
         min = 1000000000000000000000000
@@ -252,6 +253,7 @@ class Controladora:
 
         return min
 
+#Borrar función
     def distanciaEuclideaClustersComplete(self, c1, c2): #distancia entre 2 puntos
         dist = 0
         max = 0
@@ -264,9 +266,9 @@ class Controladora:
                 print ("La distancia entre", x.getId(), "(", x.getCoordenadasR2(), ")", " y ", y.getId(), "(", y.getCoordenadasR2(), ")... es ", dist)
                 if dist > max:
                     max = dist
-
         return max
 
+#Borrar función
     def distanciaEuclideaClustersAverage(self, c1, c2): #distancia entre 2 puntos
         dist = 0
         min = 1000000000000000000000000
@@ -295,6 +297,7 @@ class Controladora:
             retornar = True
         return retornar
 
+#Borrar función
     def average(self):
         min = 1000000000000000000000000
         clustersUnirse = []  # va a tener los ids de los clusters a fusionarse
@@ -322,7 +325,7 @@ class Controladora:
             self.quitarCluster(cn2)
             self.agregarClusterSuperior(nuevoCluster)
 
-
+#Borrar función
     def simple(self):
         min = 1000000000000000000000000
         clustersUnirse = []  # va a tener los ids de los clusters a fusionarse
@@ -348,7 +351,7 @@ class Controladora:
             self.quitarCluster(cn2)
 
             self.agregarClusterSuperior(nuevoCluster)
-
+#Borrar función
     def complete(self):
         min = 1000000000000000000000000
         clustersUnirse = []  # va a tener los ids de los clusters a fusionarse
@@ -378,7 +381,7 @@ class Controladora:
 
     def quitarCluster(self, c):
         self.getClusters().remove(c)
-
+    #Borrar función
     def distanciaManhattanSingle(self, c1, c2):
         dist = 0
         min = 1000000000000000000000000
@@ -393,6 +396,7 @@ class Controladora:
 
         return min
 
+    #Borrar función
     def distanciaMinkowski(self, c1, c2, p):
         dist = 0
         min = 1000000000000000000000000
@@ -416,4 +420,103 @@ class Controladora:
                         print ("\t contiene a:", y.getId())
                     self.imprimir(x.getClusters())
 
+    '''
+    El método recibe el tipo de algoritmo por el cual hacer el agrupamiento en formato string, el tipo de Distancia que utilizará, también en string y el valor de p en caso de que el tipo de Distancia sea Minchowski
+        El argumento 'algoritmo' puede ser: "single", "complete" o "average"
+        el argumento 'tipoDistancia' puede ser: "euclidea", "manhattan" o "minchowski"
+    '''
+    def agrupamiento(self, algoritmo, tipoDistancia, p):
+        min = 1000000000000000000000000
+        clustersUnirse = []  # va a tener los ids de los clusters a fusionarse
+        nuevoCluster = Cluster(None, None, None)  # es el nuevo cluster superior que se creará con el algoritmo
+        cn1 = None
+        cn2 = None
+        dist = 0
+        i = 0
+        j = 1
 
+        while i < len(self.getClusters()):
+            while j < len(self.getClusters()):
+
+                #Borrar línea: dist = self.distanciaEuclideaClustersAverage(self.getClusters()[i], self.getClusters()[j])
+                if algoritmo is 1: #Single
+                    dist = self.distanciaSingle(self.getClusters()[i], self.getClusters()[j], tipoDistancia, p)
+                if algoritmo is 2: #Complete
+                    dist = self.distanciaComplete(self.getClusters()[i], self.getClusters()[j], tipoDistancia, p)
+                if algoritmo is 3: #Average
+                    dist = self.distanciaAverage(self.getClusters()[i], self.getClusters()[j], tipoDistancia, p)
+
+                if (dist < min):
+                    min = dist
+                    cn1 = self.getClusters()[i]
+                    cn2 = self.getClusters()[j]
+                j = j + 1
+            i = i + 1
+            j = i + 1
+        if ((cn1 is not None) & (cn2 is not None)):
+            print ("La distancia mínima es: ", min, " entre ", cn1.getId(), " y ", cn2.getId())
+            nuevoCluster.setClusters([cn1, cn2])
+            self.quitarCluster(cn1)
+            self.quitarCluster(cn2)
+            self.agregarClusterSuperior(nuevoCluster)
+
+    def distanciaSingle(self, c1, c2, tipoDistancia, p): #distancia entre 2 puntos
+        dist = 0
+        min = 1000000000000000000000000
+        cn1 = c1.getClustersContenidos()
+        cn2 = c2.getClustersContenidos()
+
+        for x in cn1:
+            for y in cn2:
+                if tipoDistancia is "euclidea":
+                    dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
+                if tipoDistancia is "manhattan":
+                    dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY())
+                if tipoDistancia is "minchowski":
+                    dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p)**(1/p)
+
+                if dist < min:
+                    min = dist
+        return min
+
+    def ditanciaComplete (self, c1, c2, tipoDistancia, p): #distancia entre 2 puntos
+        dist = 0
+        max = 0
+        cn1 = c1.getClustersContenidos()
+        cn2 = c2.getClustersContenidos()
+
+        for x in cn1:
+            for y in cn2:
+                if tipoDistancia is "euclidea":
+                    dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
+                if tipoDistancia is "manhattan":
+                    dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY())
+                if tipoDistancia is "minchowski":
+                    dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p)**(1/p)
+
+                if dist > max:
+                    max = dist
+        return max
+
+    def distanciaAverage(self, c1, c2, tipoDistancia, p): #distancia entre 2 puntos
+        dist = 0
+        min = 1000000000000000000000000
+        cantidad = 0
+        cn1 = c1.getClustersContenidos()
+        cn2 = c2.getClustersContenidos()
+
+        for x in cn1:
+            dist = 0
+            for y in cn2:
+                if tipoDistancia is "euclidea":
+                    dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
+                if tipoDistancia is "manhattan":
+                    dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY())
+                if tipoDistancia is "minchowski":
+                    dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p)**(1/p)
+                cantidad = cantidad + 1
+            dist = dist/cantidad
+            print ("La distancia entre", x.getId(), "(", x.getCoordenadasR2(), ")", " y ", y.getId(), "(", y.getCoordenadasR2(), ")... es ", dist)
+            if dist < min:
+                min = dist
+        return min
