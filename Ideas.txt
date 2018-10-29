@@ -30,12 +30,13 @@ Lógica:
 LO QUE FALTA:
 	IGU:
 		- Hacer/arreglar metodo mostrar clusters cuando limite es "cantidad de clusters".
-		* Comunicar desde visual a lógica el tipo de algoritmo y distancia a utilizar.
+		- Comunicar desde visual a lógica el tipo de algoritmo y distancia a utilizar.
 		* Ventana "EN PROCESO" mientras se calcula. En otro hilo?
 		3D:
 			* Llamar a métodos de 2D o 3D según: |datos archivo / elección usuario| 
 			* Llamar metodos apropiados para obtener los clusters en 3D.
 			* Método/s para graficar clusters (dendograma no cambia).
+		* Frame - Cantidad Clusters y Cantidad Elementos por Cluster: limitar tamb cuando se usa desde archivo.
 	
 	LÓGICA:
 		* Método/s que devuelvan, según el tipo de algoritmo y la distancia, el cluster de mayor nivel.

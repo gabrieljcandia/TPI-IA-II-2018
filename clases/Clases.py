@@ -86,6 +86,11 @@ class Cluster:
         return cant
 
     def hasComponentes(self):
+        if self.getX() is not None:
+            self.tieneComponentes = True
+        else:
+            self.tieneComponentes = False
+
         return self.tieneComponentes
 
     def getPuntosR2(self): #modificar para que contemple que clusters sea un array de dos clusters (terminado)
@@ -111,7 +116,7 @@ class Cluster:
         if self.hasComponentes() is True:
             x.append(self.getX())
             y.append(self.getY())
-            z.append(self.getY())
+            z.append(self.getZ())
 
         if self.clusters is not None:
             for cluster in self.clusters:

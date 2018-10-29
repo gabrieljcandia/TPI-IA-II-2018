@@ -2,6 +2,11 @@ import sys
 from PyQt5 import uic, QtWidgets
 from PyQt5.QtWidgets import QGridLayout, QButtonGroup
 
+####exportar app a .exe, parte grafica
+#import pandas
+#from visual.IGU_Principal.py import Ui_MainWindow
+###
+
 import Controladora
 from tkinter import filedialog
 from tkinter import Tk
@@ -34,7 +39,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.inicializarRbOrigen()
         self.rbCantClusters.clicked.connect(self.radioButtonCriteriosChange)
         self.rbElemPorCluster.clicked.connect(self.radioButtonCriteriosChange)
-        self.rbOptimizarCal.clicked.connect(self.radioButtonCriteriosChange)
+        #self.rbOptimizarCal.clicked.connect(self.radioButtonCriteriosChange)
         self.rbDesdeArch.clicked.connect(self.radioButtonOrigenChange)
         self.rbGeneracionAleatoria.clicked.connect(self.radioButtonOrigenChange)
         self.rb2D.clicked.connect(self.radioButtonDimensionChange)
@@ -61,7 +66,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.rbGroupCriterios = QtWidgets.QButtonGroup()
         self.rbGroupCriterios.addButton(self.rbCantClusters)
         self.rbGroupCriterios.addButton(self.rbElemPorCluster)
-        self.rbGroupCriterios.addButton(self.rbOptimizarCal)
+        #self.rbGroupCriterios.addButton(self.rbOptimizarCal)
 
     def inicializarRbOrigen(self):
         #origenes
@@ -80,21 +85,21 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.rbCantClusters.isChecked():
             self.spinCantClusters.setEnabled(True)
             self.spinCantElemPorCluster.setEnabled(False)
-            self.rbMet1.setEnabled(False)
-            self.rbMet2.setEnabled(False)
+            #self.rbMet1.setEnabled(False)
+            #self.rbMet2.setEnabled(False)
             print("a")
-        if self.rbElemPorCluster.isChecked():
+        '''if self.rbElemPorCluster.isChecked():
             self.spinCantClusters.setEnabled(False)
             self.spinCantElemPorCluster.setEnabled(True)
             self.rbMet1.setEnabled(False)
             self.rbMet2.setEnabled(False)
-            print("b")
-        if self.rbOptimizarCal.isChecked():
+            print("b")'''
+        '''if self.rbOptimizarCal.isChecked():
             self.spinCantClusters.setEnabled(False)
             self.spinCantElemPorCluster.setEnabled(False)
-            self.rbMet1.setEnabled(True)
-            self.rbMet2.setEnabled(True)
-            print("c")
+            #self.rbMet1.setEnabled(True)
+            #self.rbMet2.setEnabled(True)
+            print("c")'''
 
     def radioButtonOrigenChange(self):
         if self.rbDesdeArch.isChecked():
@@ -155,6 +160,11 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         Cluster.idProximo = 1 #inicializa la ID de los clusters
         if self.rbDesdeArch.isChecked():
             clusters = self.extraerDatosArch()
+            if clusters[0].getZ() is None:
+                self.miControladora.dimensiones = 2
+            else:
+                self.miControladora.dimensiones = 3
+
         if self.rbGeneracionAleatoria.isChecked():
             if self.rb2D.isChecked():
                 self.miControladora.dimensiones = 2

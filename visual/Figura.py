@@ -40,6 +40,9 @@ class Figura(QDialog):
             self.ax = self.figure.add_subplot(111)
         else:
             self.ax = self.figure.add_subplot(111, projection='3d')
+            self.ax.set_xlabel('Eje X')
+            self.ax.set_ylabel('Eje Y')
+            self.ax.set_zlabel('Eje Z')
 
         clustersOrdenados = cluster.getClustersOrdenados()
 
@@ -89,7 +92,7 @@ class Figura(QDialog):
             self.ax.scatter(x, y, s=None, color=[cluster.getRGB()])
         else:
             x, y, z = cluster.getPuntosR3()
-            self.ax.scatter(x, y, z, color=[cluster.getRGB()])
+            self.ax.scatter(x, y, z, color=[cluster.getRGB()], depthshade=False)
 
 
     def graficarDendogramaHastaElementos(self, cluster, maxClusters=None, maxElemPorCluster=None): #recibe como parametro inicial el cluster de mayor nivel

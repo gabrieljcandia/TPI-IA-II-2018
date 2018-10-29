@@ -91,19 +91,26 @@ class Controladora:
                 line.strip()  # quita espacios si hubieran
                 lines.append(line)  # agrega linea en lineas
 
-        # si son 2 dimensiones
+        # si son 3 dimensiones
         try:
             for line in lines:
                 a, b, c = line.split("\t")
-                b.rstrip()  # quita el \n del final
+                c.rstrip()  # quita el \n del final
                 x.append(float(a))
                 y.append(float(b))
                 z.append(float(c))
-            datos = (x, y, z)
+            #datos = (x, y, z)
 
-        # si son 3 dimensiones
+            clusters = []
+            for i in range(x.__len__()):
+                print(i)
+                miCluster = Cluster(x[i], y[i], z[i])
+                clusters.append(miCluster)
+            print(clusters)
+
+        # si son 2 dimensiones
         except Exception as inst:
-            # x, y, z = []
+            x, y = [], []
             for line in lines:
                 a, b = line.split("\t")
                 b.rstrip()  # quita el \n del final
@@ -114,7 +121,7 @@ class Controladora:
             clusters = []
             for i in range(x.__len__()):
                 print(i)
-                miCluster = Cluster(x[i], y[i], 0)
+                miCluster = Cluster(x[i], y[i], None)
                 clusters.append(miCluster)
             print(clusters)
 

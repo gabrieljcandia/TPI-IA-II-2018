@@ -5,6 +5,7 @@ from PyQt5 import uic, QtWidgets
 from clases.Clases import Cluster
 from visual.Figura import Figura
 
+#from visual.frame.py import Ui_Frame
 qtCreatorFile2 = "visual/frame.ui" #Nombre del archivo .ui
 Ui_Frame, QtBaseClass2 = uic.loadUiType(qtCreatorFile2)
 
@@ -30,6 +31,11 @@ class IGU_Graficos():
         self.inicializarRbPersonalizarVista()
         self.ui.rbCantClusters.clicked.connect(self.controlRbPersonalizarVista)
         self.ui.rbElemPorCluster.clicked.connect(self.controlRbPersonalizarVista)
+
+        self.ui.rbEuclidea.clicked.connect(self.controlRbPersonalizarVista)
+        self.ui.rbManhattan.clicked.connect(self.controlRbPersonalizarVista)
+        self.ui.rbMinkowski.clicked.connect(self.controlRbPersonalizarVista)
+
 
         ###Calculo de clusters por cada algoritmo y distancia
         '''for i in range(self.iguPrinc.miControladora.getClusters().__len__()):
@@ -136,6 +142,8 @@ class IGU_Graficos():
             self.dendogramaAL.graficarDendogramaHastaElementos(self.clusterAL, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
 
     def editCantClusters(self):
+        self.graficarClusters()
+
         if self.ui.rbCantClusters.isChecked():
             cantClusters = self.ui.spinCantClusters.value()
             cantElemPorCluster = None
@@ -148,8 +156,6 @@ class IGU_Graficos():
             self.dendogramaSL.graficarDendogramaHastaElementos(self.clusterSL, cantClusters, cantElemPorCluster)
             self.dendogramaCL.graficarDendogramaHastaElementos(self.clusterCL, cantClusters, cantElemPorCluster)
             self.dendogramaAL.graficarDendogramaHastaElementos(self.clusterAL, cantClusters, cantElemPorCluster)
-
-        self.graficarClusters()
 
     def graficarClusters(self):
         if self.ui.rbCantClusters.isChecked():
