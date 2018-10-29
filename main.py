@@ -157,12 +157,14 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             clusters = self.extraerDatosArch()
         if self.rbGeneracionAleatoria.isChecked():
             if self.rb2D.isChecked():
+                self.miControladora.dimensiones = 2
                 clusters = self.miControladora.generarPuntosAleatorios2D(self.spinCantPuntos.value(),
                                                                      self.spinXmin.value(),
                                                                      self.spinXmax.value(),
                                                                      self.spinYmin.value(),
                                                                      self.spinYmax.value())
             if self.rb3D.isChecked():
+                self.miControladora.dimensiones = 3
                 clusters = self.miControladora.generarPuntosAleatorios3D(self.spinCantPuntos.value(),
                                                                      self.spinXmin.value(),
                                                                      self.spinXmax.value(),

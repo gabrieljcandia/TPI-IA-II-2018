@@ -490,13 +490,22 @@ class Controladora:
             i = i + 1
             j = i + 1
         if ((cn1 is not None) & (cn2 is not None)):
-            self.agregarCluster(nuevoCluster, algoritmo, tipoDistancia)
+            self.agregarCluster([cn1, cn2], algoritmo, tipoDistancia)
+
+    def quitarElemento(self, lista, el):
+        '''lista.remove(el)
+        return lista'''
+        listaRetornar = []
+        for e in lista:
+            if e is not el:
+                listaRetornar.append(e)
+        return listaRetornar
 
     def agregarCluster(self, nuevoCluster, algoritmo, tipoDistancia):
         if algoritmo is 1: #Single
             if tipoDistancia is "euclidea":
-                self.clusterSingleEuclideo.remove(nuevoCluster[0])
-                self.clusterSingleEuclideo.remove(nuevoCluster[1])
+                #self.clusterSingleEuclideo = self.quitarElemento(self.clusterSingleEuclideo, nuevoCluster[0])
+                self.getClusterSingleEuclideo().remove(nuevoCluster[1])
                 self.clusterSingleEuclideo.append(nuevoCluster)
             if tipoDistancia is "manhattan":
                 self.clusterSingleManhattan.remove(nuevoCluster[0])
@@ -625,38 +634,38 @@ class Controladora:
 
     def generarClusters(self, p):
         self.clusterSingleEuclideo = self.getClusters()
-        self.clusterSingleManhattan = self.getClusters()
-        self.clusterSingleMinshowski = self.getClusters()
-        self.clusterCompleteEuclideo = self.getClusters()
-        self.clusterCompleteManhattan = self.getClusters()
-        self.clusterCompleteMinshowski = self.getClusters()
-        self.clusterAverageEuclideo = self.getClusters()
-        self.clusterAverageManhattan = self.getClusters()
-        self.clusterAverageMinshowski = self.getClusters()
+        self.clusterSingleManhattan = self.getClusters()[:]
+        self.clusterSingleMinshowski = self.getClusters()[:]
+        self.clusterCompleteEuclideo = self.getClusters()[:]
+        self.clusterCompleteManhattan = self.getClusters()[:]
+        self.clusterCompleteMinshowski = self.getClusters()[:]
+        self.clusterAverageEuclideo = self.getClusters()[:]
+        self.clusterAverageManhattan = self.getClusters()[:]
+        self.clusterAverageMinshowski = self.getClusters()[:]
 
-        for i in range(self.getClusterSingleEuclideo()._len_()):
+        for i in range(self.getClusterSingleEuclideo().__len__()):
             self.agrupamiento(1, "euclidea", None)
 
-        for i in range(self.getClusterSingleManhattan()._len_()):
+        for i in range(self.getClusterSingleManhattan().__len__()):
             self.agrupamiento(1, "manhattan", None)
 
-        for i in range(self.getClusterSingleMinshowski()._len_()):
+        for i in range(self.getClusterSingleMinshowski().__len__()):
             self.agrupamiento(1, "minchowski", p)
 
-        for i in range(self.getClusterCompleteEuclideo()._len_()):
+        for i in range(self.getClusterCompleteEuclideo().__len__()):
             self.agrupamiento(2, "euclidea", None)
 
-        for i in range(self.getClusterCompleteManhattan()._len_()):
+        for i in range(self.getClusterCompleteManhattan().__len__()):
             self.agrupamiento(2, "manhattan", None)
 
-        for i in range(self.getClusterCompleteMinshowski()._len_()):
+        for i in range(self.getClusterCompleteMinshowski().__len__()):
             self.agrupamiento(2, "minchowski", p)
 
-        for i in range(self.getClusterAverageEuclideo()._len_()):
+        for i in range(self.getClusterAverageEuclideo().__len__()):
             self.agrupamiento(3, "euclidea", None)
 
-        for i in range(self.getClusterAverageManhattan()._len_()):
+        for i in range(self.getClusterAverageManhattan().__len__()):
             self.agrupamiento(3, "manhattan", None)
 
-        for i in range(self.getClusterAverageMinshowski()._len_()):
+        for i in range(self.getClusterAverageMinshowski().__len__()):
             self.agrupamiento(3, "minchowski", p)

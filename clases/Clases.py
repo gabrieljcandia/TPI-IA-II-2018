@@ -106,6 +106,27 @@ class Cluster:
 
         return x, y
 
+    def getPuntosR3(self): #devuelve todos los puntos (x, y) de nivel 0 que posee un cluster
+        x, y, z = [], [], []
+        if self.hasComponentes() is True:
+            x.append(self.getX())
+            y.append(self.getY())
+            z.append(self.getY())
+
+        if self.clusters is not None:
+            for cluster in self.clusters:
+                xClusters, yClusters, zClusters = cluster.getPuntosR3()
+                for xi in xClusters:
+                    x.append(xi)
+                for yi in yClusters:
+                    y.append(yi)
+                for zi in zClusters:
+                    z.append(zi)
+                #x.append(xClusters)
+                #y.append(yClusters)
+
+        return x, y, z
+
     def getCoordenadasR2(self):
         retornar = [self.x, self.y]
         return retornar

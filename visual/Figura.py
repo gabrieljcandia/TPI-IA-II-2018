@@ -1,3 +1,4 @@
+from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import copy
 import numpy as np
@@ -8,9 +9,9 @@ import math
 
 
 class Figura(QDialog):
-    def __init__(self, parent, layout):
+    def __init__(self, parent, layout, iguPrinc):
         super(Figura, self).__init__(parent=None)
-
+        self.iguPrinc = iguPrinc
 
         # a figure instance to plot on
         self.figure = plt.figure()
@@ -33,65 +34,17 @@ class Figura(QDialog):
         #layout.addWidget(self.button)
         self.setLayout(layout)
 
-    '''def graficar(self, clusters): #recibe como parametro un grupo de clusters; ver si no conviene pasar solo el cluster de mayor nivel, y recorrer los demas desde ese
-        #self.figure.clear()
-        ax = self.figure.add_subplot(111)
-        for cluster in clusters.getClusters():
-            x, y = cluster.getPuntosR2()
-            ax.scatter(x, y, s=None, color=[cluster.getRGB()])
-            if cluster.clusters is not None:
-                self.graficarCirculo(cluster)
-        plt.autoscale(enable=True, axis='both', tight=None) #habilita autoscale
-        self.canvas.draw()'''
-
-    '''def graficar(self, clusters, maxClusters=None, nvl=None):
-        cantPuntos = clusters.cantPuntos()
-        nivel = clusters.getNivel()
-        if maxClusters is not None and nivel < :
-            
-        if nivel == nvl:
-        
-        #self.figure.clear()
-        ax = self.figure.add_subplot(111)
-        for cluster in clusters.getClusters():
-            x, y = cluster.getPuntosR2()
-            ax.scatter(x, y, s=None, color=[cluster.getRGB()])
-            if cluster.clusters is not None:
-                self.graficarCirculo(cluster)
-        plt.autoscale(enable=True, axis='both', tight=None) #habilita autoscale
-        self.canvas.draw()'''
-
-    '''def graficarCluster(self, cluster, maxElemPorCluster=None):
-        self.figure.clear()
-        self.ax = self.figure.add_subplot(111)
-        clustersOrdenados = cluster.getClustersOrdenados()
-
-        if maxElemPorCluster is not None:
-            cantPuntos = cluster.cantPuntos() #devuelve la cantidad de puntos original
-            nvl = cluster.obtenerNivelDeXelementos(maxElemPorCluster, cantPuntos)
-
-            for cl in clustersOrdenados:
-                a = cl.getNivel(cantPuntos)
-                b = cl.getPadre(clustersOrdenados, cantPuntos)
-                #c = cl.getPadre(clustersOrdenados, cantPuntos).getNivel(cantPuntos)
-                if (maxElemPorCluster is not None) and (cl.getNivel(cantPuntos) <= nvl) and\
-                        (cl.getPadre(clustersOrdenados, cantPuntos)) is not None and (cl.getPadre(clustersOrdenados, cantPuntos).getNivel(cantPuntos) > nvl):
-                    self.graficarPuntosCluster(cl)
-                    self.graficarCirculo(cl)
-        else:
-            nvl = None
-
-        plt.autoscale(enable=True, axis='both', tight=None) #habilita autoscale
-        self.canvas.draw()'''
-
     def graficarCluster(self, cluster, maxElemPorCluster=None, maxClusters=None):
         self.figure.clear()
-        self.ax = self.figure.add_subplot(111)
+        if self.iguPrinc.miControladora.dimensiones == 2:
+            self.ax = self.figure.add_subplot(111)
+        else:
+            self.ax = self.figure.add_subplot(111, projection='3d')
+
         clustersOrdenados = cluster.getClustersOrdenados()
 
         # recorrer clustersOrdenados y tomar maximo cluster con cant elementos menor al maximo
         # tomar los clusters de mayor nivel que agrupen a los clusters menores o iguales al maximo
-
         if maxElemPorCluster is not None:
             max = 0
             clusters = []
@@ -103,28 +56,16 @@ class Figura(QDialog):
             clustersImpresos = [] #ID de los clusters de nivel 0 que ya se han impreso
             for cluster in clusters:
                 # si puntos del cluster no se han imprimido previamente, imprimirlos
-
-                # inicializar lista
-                # si puntos del cluster no se encuentran en lista, imprimir puntos y guardarlos en lista
                 if not self.clusterImpreso(cluster, clustersImpresos): # cluster no esta en clustersImpresos:
                     self.graficarPuntosCluster(cluster)
                     clustersImpresos.append(cluster)
-
-        '''clustersImpresos = [] #id de clusters impresos
-        elif maxClusters is not None:
-            for cluster in clustersOrdenados[:maxClusters]:
-                self.graficarPuntosCluster(cluster)'''
 
         if maxClusters is not None:
             if maxClusters == 1:
                 self.graficarPuntosCluster(cluster) #grafica cluster de nivel mas alto
             else:
                 self.graficarPuntosCluster(cluster) #grafica cluster de nivel mas alto
-
-                #clusterInverso = reversed(cluster.getClustersOrdenados())
-                clusterInverso = cluster.getClustersOrdenados()
-                for cl in clusterInverso:
-                    #if (cl.getId() < cluster.getId()) and (cl.getId() >= (cluster.getId() - maxClusters - 2)):
+                for cl in clustersOrdenados:
                     if (cl.getId() < cluster.getId()) and (cl.getId() <= (cluster.getId() - maxClusters + 1)):
                         self.graficarPuntosCluster(cl)
 
@@ -143,9 +84,13 @@ class Figura(QDialog):
         return impreso
 
     def graficarPuntosCluster(self, cluster):
-        x, y = cluster.getPuntosR2()
-        #y = np.full((x.__len__(), 1), 0, dtype=int)
-        self.ax.scatter(x, y, s=None, color=[cluster.getRGB()])
+        if self.iguPrinc.miControladora.dimensiones == 2:
+            x, y = cluster.getPuntosR2()
+            self.ax.scatter(x, y, s=None, color=[cluster.getRGB()])
+        else:
+            x, y, z = cluster.getPuntosR3()
+            self.ax.scatter(x, y, z, color=[cluster.getRGB()])
+
 
     def graficarDendogramaHastaElementos(self, cluster, maxClusters=None, maxElemPorCluster=None): #recibe como parametro inicial el cluster de mayor nivel
         self.cluster = cluster #para usar al final del metodo, porque en el camino se modifica su contenido
@@ -153,7 +98,6 @@ class Figura(QDialog):
         self.ax = self.figure.add_subplot(111)
 
         cantPuntos = cluster.cantPuntos() #devuelve cantidad de puntos original
-        cantClusters = cluster.getId() #devuelve ID del cluster de mayor jerarquia, que se corresponde a la cantidad total de clusters
 
         if maxElemPorCluster is not None:
             nvl = cluster.obtenerNivelDeXelementos(maxElemPorCluster, cantPuntos)
@@ -201,32 +145,10 @@ class Figura(QDialog):
         plt.autoscale(enable=True, axis='both', tight=None) #habilita autoscale
         self.canvas.draw()
 
-    '''def graficarDendograma(self, cluster, maxClusters=None, maxElemPorCluster=None): #recibe como parametro inicial el cluster de mayor nivel
-        self.cluster = cluster
-        self.figure.clear()
-        self.ax = self.figure.add_subplot(111)
-
-        cantPuntos = cluster.cantPuntos() #devuelve cantidad de puntos original
-        cantClusters = cluster.getId() #devuelve ID del cluster de mayor jerarquia, que se corresponde a la cantidad total de clusters
-
-        if maxElemPorCluster is not None:
-            nvl = cluster.obtenerNivelDeXelementos(maxElemPorCluster, cantPuntos)
-        else:
-            nvl = None
-
-        if cantPuntos < cluster.getId() and cantPuntos >= 2: #control de entrada
-            self.graficarDendogramaCluster(cluster, cantPuntos, cantClusters, maxClusters, maxElemPorCluster, nvl)
-
-        plt.autoscale(enable=True, axis='both', tight=None) #habilita autoscale
-        self.canvas.draw()'''
-
     def graficarDendogramaCluster(self, cluster, cantPuntos, cantClusters, maxClusters=None, maxElemPorCluster=None, nvl=None):
         if cluster.clusters is not None:
             if (maxClusters is not None) and (cluster.getId() <= cantClusters - maxClusters + 1): #control limite cantidad clusters
                 self.graficarDendogramaClusterLineas(cluster, cantPuntos)
-                #if cluster.getId() == cantClusters - maxClusters + 1:
-                    #print("a")
-                    #self.graficarCluster(cluster)
 
             if maxElemPorCluster is not None:
                 self.graficarDendogramaClusterLineas(cluster, cantPuntos)
@@ -242,13 +164,7 @@ class Figura(QDialog):
         nivel = cluster.getNivel(cantPuntos)
         clIzq = cluster.getClusterIzq()
         clDer = cluster.getClusterDer()
-        '''if clIzq is clDer:
-            modificarAltura = True
-            # ---borrar este comentario---- clDer es el que tiene la menor media de sus puntos max y min (es solo una convencion)
-            if cluster.getClusters() is not None:
-                for cl in cluster.getClusters(): #toma como clIzq el cluster distinto de clDer
-                    if cl is not clDer:
-                        clIzq = cl'''
+
         if clIzq is clDer:
             clIzq = cluster.getClusterIzqIguales()
             clDer = cluster.getClusterDerIguales()
@@ -261,37 +177,10 @@ class Figura(QDialog):
         hIzq = clIzq.getNivel(cantPuntos)
         hDer = clDer.getNivel(cantPuntos)
 
-        if modificarAltura is True:
-            '''puntosXizq = clIzq.getClustersContenidosId()  #ids de nodos hoja (nivel 0)
-            puntosXder = clDer.getClustersContenidosId()  #ids de nodos hoja (nivel 0)
-
-            xIzq = 0
-            for puntoIzq in puntosXizq: #media de los nodos hoja de cada cluster
-                if xIzq == 0:
-                    xIzq = puntoIzq
-                else:
-                    xIzq = (xIzq + puntoIzq) / 2
-
-            xDer = 0
-            for puntoDer in puntosXder: #media de los nodos hoja de cada cluster
-                if xDer == 0:
-                    xDer = puntoDer
-                else:
-                    xDer = (xDer + puntoDer) / 2'''
-
-            '''xIzqI = clIzq.getClusterIzq().getLink()
-            xIzqD = clIzq.getClusterIzq().getLink()
-            xIzq = (xIzqI + xIzqD) / 2
-
-            xDerI = clDer.getClusterDer().getLink()
-            xDerD = clDer.getClusterDer().getLink()
-            xDer = (xDerI + xDerD) / 2'''
-
-            #xIzq = clIzq.getLink()
-            #xDer = clDer.getLink()
-        else:
+        if modificarAltura is False:
             xIzq = clIzq.getLink()
             xDer = clDer.getLink()
+
         self.ax.plot([xIzq, xIzq, xDer, xDer],[hIzq, nivel, nivel, hDer], color=cluster.getRGB())
 
     def graficarCirculo(self, cluster):

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>818</width>
-    <height>476</height>
+    <height>463</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,7 +43,7 @@
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>83</height>
+             <height>82</height>
             </size>
            </property>
            <property name="title">
@@ -145,103 +145,7 @@
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <item>
-          <widget class="QGroupBox" name="groupBox_3">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>220</width>
-             <height>80</height>
-            </size>
-           </property>
-           <property name="title">
-            <string>Métricas</string>
-           </property>
-           <widget class="QWidget" name="horizontalLayoutWidget_4">
-            <property name="geometry">
-             <rect>
-              <x>60</x>
-              <y>10</y>
-              <width>121</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_15">
-             <item>
-              <widget class="QLabel" name="label_13">
-               <property name="text">
-                <string>Método 1</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPlainTextEdit" name="txtMet1">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>50</width>
-                 <height>28</height>
-                </size>
-               </property>
-               <property name="plainText">
-                <string>20</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="horizontalLayoutWidget_3">
-            <property name="geometry">
-             <rect>
-              <x>60</x>
-              <y>40</y>
-              <width>121</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_18">
-             <item>
-              <widget class="QLabel" name="label_15">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>28</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>Método 2</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPlainTextEdit" name="txtMet2">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>50</width>
-                 <height>28</height>
-                </size>
-               </property>
-               <property name="plainText">
-                <string>35</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </widget>
-         </item>
-        </layout>
+        <layout class="QHBoxLayout" name="horizontalLayout_5"/>
        </item>
        <item>
         <widget class="QFrame" name="frame">
@@ -263,7 +167,7 @@
             <x>0</x>
             <y>0</y>
             <width>281</width>
-            <height>121</height>
+            <height>111</height>
            </rect>
           </property>
           <property name="title">
@@ -301,6 +205,19 @@
           </layout>
          </widget>
         </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>100</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </item>
