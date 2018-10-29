@@ -283,7 +283,11 @@ class Controladora:
 
         for x in cn1:
             for y in cn2:
-                dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
+                if (c1.getZ() is None) | (c2.getZ() is None):
+                    dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
+                else: #Para R3
+                    dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2 + (x.getZ() - y.getZ())**2)
+                    
                 if dist < min:
                     min = dist
 
