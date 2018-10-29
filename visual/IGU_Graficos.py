@@ -39,22 +39,22 @@ class IGU_Graficos():
         self.clusterCL = self.iguPrinc.miControladora.getClusters()[0]
         self.clusterAL = self.iguPrinc.miControladora.getClusters()[0]'''
 
-        #self.iguPrinc.miControladora.generarClusters(3)
-        for i in range(self.iguPrinc.miControladora.getClusters().__len__()):
+        self.iguPrinc.miControladora.generarClusters(3)
+        '''for i in range(self.iguPrinc.miControladora.getClusters().__len__()):
             self.iguPrinc.miControladora.simple()
-        self.clusterSL = self.iguPrinc.miControladora.getClusters()[0]
+        self.clusterSL = self.iguPrinc.miControladora.getClusters()[0]'''
 
-        self.clusterSL_Eu = self.iguPrinc.miControladora.getClusterSingleEuclideo()
-        self.clusterCL_Eu = self.iguPrinc.miControladora.getClusterCompleteEuclideo()
-        self.clusterAL_Eu = self.iguPrinc.miControladora.getClusterAverageEuclideo()
+        self.clusterSL_Eu = self.iguPrinc.miControladora.getClusterSingleEuclideo()[0]
+        self.clusterCL_Eu = self.iguPrinc.miControladora.getClusterCompleteEuclideo()[0]
+        self.clusterAL_Eu = self.iguPrinc.miControladora.getClusterAverageEuclideo()[0]
 
-        self.clusterSL_Mi = self.iguPrinc.miControladora.getClusterSingleMinshowski()
-        self.clusterCL_Mi = self.iguPrinc.miControladora.getClusterCompleteMinshowski()
-        self.clusterAL_Mi = self.iguPrinc.miControladora.getClusterAverageMinshowski()
+        self.clusterSL_Mi = self.iguPrinc.miControladora.getClusterSingleMinshowski()[0]
+        self.clusterCL_Mi = self.iguPrinc.miControladora.getClusterCompleteMinshowski()[0]
+        self.clusterAL_Mi = self.iguPrinc.miControladora.getClusterAverageMinshowski()[0]
 
-        self.clusterSL_Ma = self.iguPrinc.miControladora.getClusterSingleManhattan()
-        self.clusterCL_Ma = self.iguPrinc.miControladora.getClusterCompleteManhattan()
-        self.clusterAL_Ma = self.iguPrinc.miControladora.getClusterAverageManhattan()
+        self.clusterSL_Ma = self.iguPrinc.miControladora.getClusterSingleManhattan()[0]
+        self.clusterCL_Ma = self.iguPrinc.miControladora.getClusterCompleteManhattan()[0]
+        self.clusterAL_Ma = self.iguPrinc.miControladora.getClusterAverageManhattan()[0]
 
         #inicializar figuras donde iran los graficos
         self.graficoSL = Figura(self.ui, self.ui.VLgraficoSL, self.iguPrinc)
@@ -92,6 +92,19 @@ class IGU_Graficos():
             self.ui.spinCantElemPorCluster.setEnabled(True)
             self.ui.spinCantClusters.setEnabled(False)
 
+        if self.iguPrinc.rbEuclidea.isChecked():
+            self.ui.rbEuclidea.setChecked(True)
+            self.ui.rbManhattan.setChecked(False)
+            self.ui.rbMinkowski.setChecked(False)
+        if self.iguPrinc.rbManhattan.isChecked():
+            self.ui.rbEuclidea.setChecked(False)
+            self.ui.rbManhattan.setChecked(True)
+            self.ui.rbMinkowski.setChecked(False)
+        if self.iguPrinc.rbMinkowski.isChecked():
+            self.ui.rbEuclidea.setChecked(False)
+            self.ui.rbManhattan.setChecked(False)
+            self.ui.rbMinkowski.setChecked(True)
+
     def controlRbPersonalizarVista(self):
         if self.ui.rbCantClusters.isChecked():
             self.ui.spinCantClusters.setEnabled(True)
@@ -104,37 +117,37 @@ class IGU_Graficos():
 
     #funciones graficos
     def graficarDendogramas(self):
-        self.dendogramaSL = Figura(self.ui, self.ui.VLgraficoDendogramaSL)
-        self.dendogramaCL = Figura(self.ui, self.ui.VLgraficoDendogramaCL)
-        self.dendogramaAL = Figura(self.ui, self.ui.VLgraficoDendogramaAL)
+        self.dendogramaSL = Figura(self.ui, self.ui.VLgraficoDendogramaSL, self.iguPrinc)
+        self.dendogramaCL = Figura(self.ui, self.ui.VLgraficoDendogramaCL, self.iguPrinc)
+        self.dendogramaAL = Figura(self.ui, self.ui.VLgraficoDendogramaAL, self.iguPrinc)
 
         if self.ui.rbCantClusters.isChecked():
             cantClusters = self.iguPrinc.spinCantClusters.value()
             cantElemPorCluster = None
-            '''self.dendogramaSL.graficarDendogramaHastaCluster(self.clusterSL, cantClusters, cantElemPorCluster)
+            self.dendogramaSL.graficarDendogramaHastaCluster(self.clusterSL, cantClusters, cantElemPorCluster)
             self.dendogramaCL.graficarDendogramaHastaCluster(self.clusterCL, cantClusters, cantElemPorCluster)
-            self.dendogramaAL.graficarDendogramaHastaCluster(self.clusterAL, cantClusters, cantElemPorCluster)'''
+            self.dendogramaAL.graficarDendogramaHastaCluster(self.clusterAL, cantClusters, cantElemPorCluster)
 
         elif self.ui.rbElemPorCluster.isChecked():
             cantElemPorCluster = self.iguPrinc.spinCantElemPorCluster.value()
             cantClusters = None
-            '''self.dendogramaSL.graficarDendogramaHastaElementos(self.clusterSL, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
+            self.dendogramaSL.graficarDendogramaHastaElementos(self.clusterSL, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
             self.dendogramaCL.graficarDendogramaHastaElementos(self.clusterCL, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
-            self.dendogramaAL.graficarDendogramaHastaElementos(self.clusterAL, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia'''
+            self.dendogramaAL.graficarDendogramaHastaElementos(self.clusterAL, cantClusters, cantElemPorCluster) #se pasa el cluster de mayor jerarquia
 
     def editCantClusters(self):
         if self.ui.rbCantClusters.isChecked():
             cantClusters = self.ui.spinCantClusters.value()
             cantElemPorCluster = None
-            '''self.dendogramaSL.graficarDendogramaHastaCluster(self.clusterSL, cantClusters, cantElemPorCluster)
+            self.dendogramaSL.graficarDendogramaHastaCluster(self.clusterSL, cantClusters, cantElemPorCluster)
             self.dendogramaCL.graficarDendogramaHastaCluster(self.clusterCL, cantClusters, cantElemPorCluster)
-            self.dendogramaAL.graficarDendogramaHastaCluster(self.clusterAL, cantClusters, cantElemPorCluster)'''
+            self.dendogramaAL.graficarDendogramaHastaCluster(self.clusterAL, cantClusters, cantElemPorCluster)
         elif self.ui.rbElemPorCluster.isChecked():
             cantElemPorCluster = self.ui.spinCantElemPorCluster.value()
             cantClusters = None
-            '''self.dendogramaSL.graficarDendogramaHastaElementos(self.clusterSL, cantClusters, cantElemPorCluster)
+            self.dendogramaSL.graficarDendogramaHastaElementos(self.clusterSL, cantClusters, cantElemPorCluster)
             self.dendogramaCL.graficarDendogramaHastaElementos(self.clusterCL, cantClusters, cantElemPorCluster)
-            self.dendogramaAL.graficarDendogramaHastaElementos(self.clusterAL, cantClusters, cantElemPorCluster)'''
+            self.dendogramaAL.graficarDendogramaHastaElementos(self.clusterAL, cantClusters, cantElemPorCluster)
 
         self.graficarClusters()
 
@@ -147,20 +160,18 @@ class IGU_Graficos():
             cantClusters = None
 
         if self.ui.rbEuclidea.isChecked():
-            #self.clusterSL = self.clusterSL_Eu
+            self.clusterSL = self.clusterSL_Eu
             self.clusterCL = self.clusterCL_Eu
             self.clusterAL = self.clusterAL_Eu
-        elif self.ui.rbManhattan.isChecked():
-            #self.clusterSL = self.clusterSL_Ma
+        if self.ui.rbManhattan.isChecked():
+            self.clusterSL = self.clusterSL_Ma
             self.clusterCL = self.clusterCL_Ma
             self.clusterAL = self.clusterAL_Ma
-        elif self.ui.rbMinkowski.isChecked():
-            #self.clusterSL = self.clusterSL_Mi
+        if self.ui.rbMinkowski.isChecked():
+            self.clusterSL = self.clusterSL_Mi
             self.clusterCL = self.clusterCL_Mi
             self.clusterAL = self.clusterAL_Mi
 
         self.graficoSL.graficarCluster(self.clusterSL, cantElemPorCluster, cantClusters)
-        '''self.graficoSL.graficarCluster(self.clusterSL, cantElemPorCluster, cantClusters)
         self.graficoCL.graficarCluster(self.clusterCL, cantElemPorCluster, cantClusters)
-        self.graficoAL.graficarCluster(self.clusterAL, cantElemPorCluster, cantClusters)'''
-
+        self.graficoAL.graficarCluster(self.clusterAL, cantElemPorCluster, cantClusters)

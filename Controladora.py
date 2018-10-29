@@ -1,5 +1,9 @@
 import random
 import math
+import copy
+
+import numpy as np
+from scipy.special import cbrt
 
 from clases.Clases import Cluster
 
@@ -283,7 +287,11 @@ class Controladora:
 
         for x in cn1:
             for y in cn2:
-                dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
+                if (c1.getZ() is None) | (c2.getZ() is None):
+                    dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2)
+                else: #Para R3
+                    dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2 + (x.getZ() - y.getZ())**2)
+                    
                 if dist < min:
                     min = dist
 
@@ -463,8 +471,6 @@ class Controladora:
     '''
     def agrupamiento(self, algoritmo, tipoDistancia, p):
         min = 1000000000000000000000000
-        clustersUnirse = []  # va a tener los ids de los clusters a fusionarse
-        nuevoCluster = Cluster(None, None, None)  # es el nuevo cluster superior que se creará con el algoritmo
         cn1 = None
         cn2 = None
         dist = 0
@@ -492,62 +498,59 @@ class Controladora:
         if ((cn1 is not None) & (cn2 is not None)):
             self.agregarCluster([cn1, cn2], algoritmo, tipoDistancia)
 
-    def quitarElemento(self, lista, el):
-        '''lista.remove(el)
-        return lista'''
-        listaRetornar = []
-        for e in lista:
-            if e is not el:
-                listaRetornar.append(e)
-        return listaRetornar
-
-    def agregarCluster(self, nuevoCluster, algoritmo, tipoDistancia):
+    def agregarCluster(self, n, algoritmo, tipoDistancia):
+        agregar = Cluster(None, None, None)
+        agregar.setClusters(n)
         if algoritmo is 1: #Single
             if tipoDistancia is "euclidea":
-                #self.clusterSingleEuclideo = self.quitarElemento(self.clusterSingleEuclideo, nuevoCluster[0])
-                self.getClusterSingleEuclideo().remove(nuevoCluster[1])
-                self.clusterSingleEuclideo.append(nuevoCluster)
+                self.getClusterSingleEuclideo().remove(n[0])
+                self.getClusterSingleEuclideo().remove(n[1])
+                self.clusterSingleEuclideo.append(agregar)
             if tipoDistancia is "manhattan":
-                self.clusterSingleManhattan.remove(nuevoCluster[0])
-                self.clusterSingleManhattan.remove(nuevoCluster[1])
-                self.clusterSingleManhattan.append(nuevoCluster)
+                self.clusterSingleManhattan.remove(n[0])
+                self.clusterSingleManhattan.remove(n[1])
+                self.clusterSingleManhattan.append(agregar)
             if tipoDistancia is "minchowski":
-                self.clusterSingleMinchowski.remove(nuevoCluster[0])
-                self.clusterSingleMinchowski.remove(nuevoCluster[1])
-                self.clusterSingleMinchowski.append(nuevoCluster)
+                self.clusterSingleMinchowski.remove(n[0])
+                self.clusterSingleMinchowski.remove(n[1])
+                self.clusterSingleMinchowski.append(agregar)
 
         if algoritmo is 2: #Complete
             if tipoDistancia is "euclidea":
-                self.clusterCompleteEuclideo.remove(nuevoCluster[0])
-                self.clusterCompleteEuclideo.remove(nuevoCluster[1])
-                self.clusterCompleteEuclideo.append(nuevoCluster)
+                self.clusterCompleteEuclideo.remove(n[0])
+                self.clusterCompleteEuclideo.remove(n[1])
+                self.clusterCompleteEuclideo.append(agregar)
             if tipoDistancia is "manhattan":
-                self.clusterCompleteManhattan.remove(nuevoCluster[0])
-                self.clusterCompleteManhattan.remove(nuevoCluster[1])
-                self.clusterCompleteManhattan.append(nuevoCluster)
+                self.clusterCompleteManhattan.remove(n[0])
+                self.clusterCompleteManhattan.remove(n[1])
+                self.clusterCompleteManhattan.append(agregar)
             if tipoDistancia is "minchowski":
-                self.clusterCompleteMinchowski.remove(nuevoCluster[0])
-                self.clusterCompleteMinchowski.remove(nuevoCluster[1])
-                self.clusterCompleteMinchowski.append(nuevoCluster)
+                self.clusterCompleteMinchowski.remove(n[0])
+                self.clusterCompleteMinchowski.remove(n[1])
+                self.clusterCompleteMinchowski.append(agregar)
 
         if algoritmo is 3: #Average
             if tipoDistancia is "euclidea":
-                self.clusterAverageEuclideo.remove(nuevoCluster[0])
-                self.clusterAverageEuclideo.remove(nuevoCluster[1])
-                self.clusterAverageEuclideo.append(nuevoCluster)
+                self.clusterAverageEuclideo.remove(n[0])
+                self.clusterAverageEuclideo.remove(n[1])
+                self.clusterAverageEuclideo.append(agregar)
             if tipoDistancia is "manhattan":
-                self.clusterAverageManhattan.remove(nuevoCluster[0])
-                self.clusterAverageManhattan.remove(nuevoCluster[1])
-                self.clusterAverageManhattan.append(nuevoCluster)
+                self.clusterAverageManhattan.remove(n[0])
+                self.clusterAverageManhattan.remove(n[1])
+                self.clusterAverageManhattan.append(agregar)
             if tipoDistancia is "minchowski":
-                self.clusterAverageMinshowski.remove(nuevoCluster[0])
-                self.clusterAverageMinshowski.remove(nuevoCluster[1])
-                self.clusterAverageMinshowski.append(nuevoCluster)
+                self.clusterAverageMinchowski.remove(n[0])
+                self.clusterAverageMinchowski.remove(n[1])
+                self.clusterAverageMinchowski.append(agregar)
+
+        self.clusters.remove(n[0])
+        self.clusters.remove(n[1])
+        self.agregarClusterSuperior(agregar)
 
 
     def distanciaSingle(self, c1, c2, tipoDistancia, p): #distancia entre 2 puntos
         dist = 0
-        min = 1000000000000000000000000
+        min = 1000000000000000000.0
         cn1 = c1.getClustersContenidos()
         cn2 = c2.getClustersContenidos()
 
@@ -559,20 +562,35 @@ class Controladora:
                     if tipoDistancia is "manhattan":
                         dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY())
                     if tipoDistancia is "minchowski":
-                        dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p)**(1/p)
+                        dist = cbrt(((x.getX() - y.getX())**p + (x.getY() - y.getY())**p))
                 else: #Para R3
                     if tipoDistancia is "euclidea":
                         dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2 + (x.getZ() - y.getZ())**2)
                     if tipoDistancia is "manhattan":
                         dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY()) + math.fabs(x.getZ() - y.getZ())
                     if tipoDistancia is "minchowski":
-                        dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p + (x.getZ() - y.getZ())**p)**(1/p)
-
+                        x1 = x.getX()
+                        x2 = y.getX()
+                        y1 = x.getY()
+                        y2 = y.getY()
+                        z1 = x.getZ()
+                        z2 = y.getZ()
+                        a = (x.getX() - y.getX())**p
+                        b = (x.getY() - y.getY())**p
+                        c = (x.getZ() - y.getZ())**p
+                        abc = (a + b + c)
+                        last = (a + b + c)**(1/p)
+                        #np.copysign(np.abs(x) ** (1. / 3), x)
+                        #dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p + (x.getZ() - y.getZ())**p)**(1/p)
+                        #dist = np.copysign(np.abs(((x.getX() - y.getX())**p + (x.getY() - y.getY())**p + (x.getZ() - y.getZ())**p)) ** (1. / 3), x)
+                        dist = cbrt(((x.getX() - y.getX())**p + (x.getY() - y.getY())**p + (x.getZ() - y.getZ())**p))
+                if type(dist) is complex:
+                    print("complex")
                 if dist < min:
                     min = dist
         return min
 
-    def ditanciaComplete (self, c1, c2, tipoDistancia, p): #distancia entre 2 puntos
+    def distanciaComplete(self, c1, c2, tipoDistancia, p): #distancia entre 2 puntos
         dist = 0
         max = 0
         cn1 = c1.getClustersContenidos()
@@ -586,16 +604,17 @@ class Controladora:
                     if tipoDistancia is "manhattan":
                         dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY())
                     if tipoDistancia is "minchowski":
-                        dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p)**(1/p)
+                        dist = cbrt(((x.getX() - y.getX())**p + (x.getY() - y.getY())**p))
                 else: #Para R3
                     if tipoDistancia is "euclidea":
                         dist = math.sqrt((x.getX() - y.getX())**2 + (x.getY() - y.getY())**2 + (x.getZ() - y.getZ())**2)
                     if tipoDistancia is "manhattan":
                         dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY()) + math.fabs(x.getZ() - y.getZ())
                     if tipoDistancia is "minchowski":
-                        dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p + (x.getZ() - y.getZ())**p)**(1/p)
+                        dist = cbrt(((x.getX() - y.getX())**p + (x.getY() - y.getY())**p + (x.getZ() - y.getZ())**p))
 
                 if dist > max:
+                    int(dist)
                     max = dist
         return max
 
@@ -615,7 +634,7 @@ class Controladora:
                     if tipoDistancia is "manhattan":
                         dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY())
                     if tipoDistancia is "minchowski":
-                        dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p)**(1/p)
+                        dist = cbrt(((x.getX() - y.getX())**p + (x.getY() - y.getY())**p))
 
                 else: #Para R3
                     if tipoDistancia is "euclidea":
@@ -623,49 +642,70 @@ class Controladora:
                     if tipoDistancia is "manhattan":
                         dist = math.fabs(x.getX() - y.getX()) + math.fabs(x.getY() - y.getY()) + math.fabs(x.getZ() - y.getZ())
                     if tipoDistancia is "minchowski":
-                        dist = ((x.getX() - y.getX())**p + (x.getY() - y.getY())**p + (x.getZ() - y.getZ())**p)**(1/p)
+                        dist = cbrt(((x.getX() - y.getX())**p + (x.getY() - y.getY())**p + (x.getZ() - y.getZ())**p))
                 cantidad = cantidad + 1
             dist = dist/cantidad
             print ("La distancia entre", x.getId(), "(", x.getCoordenadasR2(), ")", " y ", y.getId(), "(", y.getCoordenadasR2(), ")... es ", dist)
             if dist < min:
+                int(dist)
                 min = dist
         return min
 
 
     def generarClusters(self, p):
-        self.clusterSingleEuclideo = self.getClusters()
-        self.clusterSingleManhattan = self.getClusters()[:]
-        self.clusterSingleMinshowski = self.getClusters()[:]
-        self.clusterCompleteEuclideo = self.getClusters()[:]
-        self.clusterCompleteManhattan = self.getClusters()[:]
-        self.clusterCompleteMinshowski = self.getClusters()[:]
-        self.clusterAverageEuclideo = self.getClusters()[:]
-        self.clusterAverageManhattan = self.getClusters()[:]
-        self.clusterAverageMinshowski = self.getClusters()[:]
+        self.clusterSingleEuclideo = copy.copy(self.getClusters())
+        self.clusterSingleManhattan = copy.copy(self.getClusters())
+        self.clusterSingleMinchowski = copy.copy(self.getClusters())
+        self.clusterCompleteEuclideo = copy.copy(self.getClusters())
+        self.clusterCompleteManhattan = copy.copy(self.getClusters())
+        self.clusterCompleteMinchowski = copy.copy(self.getClusters())
+        self.clusterAverageEuclideo = copy.copy(self.getClusters())
+        self.clusterAverageManhattan = copy.copy(self.getClusters())
+        self.clusterAverageMinchowski = copy.copy(self.getClusters())
+        #clusterAuxiliar = self.getClusters()[:]
+        clusterAuxiliar = copy.copy(self.getClusters())
 
         for i in range(self.getClusterSingleEuclideo().__len__()):
             self.agrupamiento(1, "euclidea", None)
 
+        #self.setClusters(clusterAuxiliar)
+        self.setClusters(copy.copy(clusterAuxiliar))
+        Cluster.idProximo = self.getClusters().__len__() + 1
         for i in range(self.getClusterSingleManhattan().__len__()):
             self.agrupamiento(1, "manhattan", None)
 
+        #self.setClusters(clusterAuxiliar)
+        self.setClusters(copy.copy(clusterAuxiliar))
+        Cluster.idProximo = self.getClusters().__len__() + 1
         for i in range(self.getClusterSingleMinshowski().__len__()):
             self.agrupamiento(1, "minchowski", p)
 
+        self.setClusters(copy.copy(clusterAuxiliar))
+        Cluster.idProximo = self.getClusters().__len__() + 1
         for i in range(self.getClusterCompleteEuclideo().__len__()):
             self.agrupamiento(2, "euclidea", None)
 
+        self.setClusters(copy.copy(clusterAuxiliar))
+        Cluster.idProximo = self.getClusters().__len__() + 1
         for i in range(self.getClusterCompleteManhattan().__len__()):
             self.agrupamiento(2, "manhattan", None)
 
+        self.setClusters(copy.copy(clusterAuxiliar))
+        Cluster.idProximo = self.getClusters().__len__() + 1
         for i in range(self.getClusterCompleteMinshowski().__len__()):
             self.agrupamiento(2, "minchowski", p)
 
+        self.setClusters(copy.copy(clusterAuxiliar))
+        Cluster.idProximo = self.getClusters().__len__() + 1
         for i in range(self.getClusterAverageEuclideo().__len__()):
             self.agrupamiento(3, "euclidea", None)
 
+        self.setClusters(copy.copy(clusterAuxiliar))
+        Cluster.idProximo = self.getClusters().__len__() + 1
         for i in range(self.getClusterAverageManhattan().__len__()):
             self.agrupamiento(3, "manhattan", None)
 
+        self.setClusters(copy.copy(clusterAuxiliar))
+        Cluster.idProximo = self.getClusters().__len__() + 1
         for i in range(self.getClusterAverageMinshowski().__len__()):
             self.agrupamiento(3, "minchowski", p)

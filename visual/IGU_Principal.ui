@@ -988,6 +988,9 @@
              <property name="text">
               <string>Euclídea</string>
              </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>
